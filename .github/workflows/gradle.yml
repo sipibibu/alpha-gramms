@@ -35,6 +35,9 @@ jobs:
       with:
         arguments: build
         build-root-directory: ./main/
+    - name: check jar
+      run: |
+        ls ./
   push_to_registry:
     needs: [build]
     name: Push Docker image to Docker Hub
