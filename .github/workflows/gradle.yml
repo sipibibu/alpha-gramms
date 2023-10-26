@@ -54,9 +54,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: jar
-      - name: check jar
-        run: |
-            /bin/bash ls ./
       - name: Check out the repo
         uses: actions/checkout@v4
 
