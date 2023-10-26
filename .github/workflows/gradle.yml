@@ -54,6 +54,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: jar
+          path: ./
       - name: Check out the repo
         uses: actions/checkout@v4
 
