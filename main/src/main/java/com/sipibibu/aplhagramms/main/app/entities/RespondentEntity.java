@@ -1,10 +1,8 @@
 package com.sipibibu.aplhagramms.main.app.entities;
 
-import com.sipibibu.aplhagramms.main.app.services.UserService;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
