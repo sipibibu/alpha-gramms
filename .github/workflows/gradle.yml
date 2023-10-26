@@ -38,14 +38,25 @@ jobs:
     - name: check jar
       run: |
         ls ./main/build/libs/
+
+    - name: upload built artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: jar
+        path: main/build/libs/main-0.0.1-SNAPSHOT.jar
+
   push_to_registry:
     needs: [build]
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     steps:
+      - name: Download jar from job build
+        uses: actions/download-artifact@v3
+        with:
+          name: jar
       - name: check jar
         run: |
-            ls ./
+            /bin/bash ls ./
       - name: Check out the repo
         uses: actions/checkout@v4
 
