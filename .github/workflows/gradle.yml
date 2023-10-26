@@ -80,3 +80,13 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+  deploy:
+    needs: [ push_to_registry ]
+    name: deploy
+    runs-on: self-hosted
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+      - name: deploy
+        run: |
+            microk8s kubectl delete pods --all -n chess
