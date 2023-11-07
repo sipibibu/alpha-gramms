@@ -1,5 +1,6 @@
 package com.sipibibu.aplhagramms.main.infastructure.config;
 
+import com.google.api.services.forms.v1.FormsScopes;
 import com.google.common.collect.ImmutableList;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -68,7 +69,8 @@ public class OAuth2LoginConfig {
                 .clientId(client_id)
                 .clientSecret(client_secret)
                 //.redirectUri("http://localhost:8080/login/oauth2/code/google")
-                .redirectUri("http://localhost:5173")
+                .redirectUri("http://localhost:8080/login/oauth2/code/google")
+                //.redirectUri("http://localhost:5173")
                 .build();
     }
 }

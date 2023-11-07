@@ -19,10 +19,10 @@ public class UserController {
     @Autowired UserService userService;
 
     @GetMapping("/register/respondent")
-    public void registerRespondent(OAuth2AuthenticationToken token) {
+    public String registerRespondent(OAuth2AuthenticationToken token) {
         String googleEmail = token.getPrincipal().getAttribute("email");
         userService.register(new RespondentEntity(googleEmail));
-        return;
+        return token.toString();
     }
     @RequestMapping(path = "/getUser/{id}", method= RequestMethod.GET)
     public Optional<UserEntity> getUser(@PathVariable("id") String id) {
