@@ -29,4 +29,8 @@ public class UserController {
         var user = userService.getById(id);
         return user;
     }
+    @RequestMapping("/hello")
+    public String hello(){
+        return "hello";
+    }
 }

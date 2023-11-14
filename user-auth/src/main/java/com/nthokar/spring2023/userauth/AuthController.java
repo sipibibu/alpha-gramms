@@ -1,15 +1,11 @@
 package com.nthokar.spring2023.userauth;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AuthController {
@@ -42,11 +38,11 @@ public class AuthController {
 
     record RefreshTokenResponse(String access_jwt_token, String refresh_jwt_token) {};
     @GetMapping("/token/refresh")
-    public RefreshTokenResponse refreshToken(HttpServletRequest request) {
-        String headerAuth = request.getHeader("Authorization");
+    public RefreshTokenResponse refreshToken(HttpHeaders request) {
+        String headerAuth = request.getFirst("Authorization");
         String refreshToken = headerAuth.substring(7, headerAuth.length());
 
-        String email = tokenService.parseToken(refreshToken);
+        String email = tokenService.parseToken(refreshToken).getSubject();
         CustomUsrDetails user = (CustomUsrDetails) usrDetailsService.loadUserByUsername(email);
         String access_token = tokenService.generateAccessToken(user);
         String refresh_token = tokenService.generateRefreshToken(user);
@@ -63,5 +59,10 @@ public class AuthController {
         catch (Exception e){
             return "bad";
         }
+    }
+
+    @PostMapping("/validate")
+    public String validate(@RequestParam String token){
+        return tokenService.parseToken(token).toString();
     }
 }
