@@ -1,20 +1,19 @@
-package com.nthokar.spring2023.userauth;
+package com.nthokar.spring2023.userauth.app.entities;
 
+import jakarta.persistence.Entity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public class CustomUsrDetails implements UserDetails {
+public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
 
-    private static final long serialVersionUID = 1L;
-    private User user;
+    User user;
 
-    public CustomUsrDetails(User user) {
+    public UserDetails (User user){
         this.user = user;
     }
 
@@ -23,7 +22,7 @@ public class CustomUsrDetails implements UserDetails {
         Set<Role> roles = user.getRoles();
 
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        for(Role role : roles) {authorities.add(new SimpleGrantedAuthority(role.getRoleName()));}
+        for(Role role : roles) {authorities.add(new SimpleGrantedAuthority(role.name()));}
         return authorities;
     }
 

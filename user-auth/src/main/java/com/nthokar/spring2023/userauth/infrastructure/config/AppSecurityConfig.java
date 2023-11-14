@@ -1,4 +1,4 @@
-package com.nthokar.spring2023.userauth.config;
+package com.nthokar.spring2023.userauth.infrastructure.config;
 
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
@@ -6,9 +6,10 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import com.nthokar.spring2023.userauth.CustomUsrDetailsService;
-import com.nthokar.spring2023.userauth.RsaProperties;
-import com.nthokar.spring2023.userauth.TokenService;
+import com.nthokar.spring2023.userauth.app.MyUserDetailsService;
+import com.nthokar.spring2023.userauth.app.RsaProperties;
+import com.nthokar.spring2023.userauth.app.TokenService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,6 +33,7 @@ import org.springframework.security.config.annotation.web.configurers.oauth2.ser
 @EnableWebSecurity
 @Configuration
 public class AppSecurityConfig {
+    @Autowired MyUserDetailsService userDetailsService;
 
     private final RsaProperties rsaKeys;
 
@@ -45,14 +47,9 @@ public class AppSecurityConfig {
     }
 
     @Bean
-    public UserDetailsService customUserDetailsService() {
-        return new CustomUsrDetailsService();
-    }
-
-    @Bean
     public AuthenticationManager authManager() {
         var authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(customUserDetailsService());
+        authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(authProvider);
     }

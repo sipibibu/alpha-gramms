@@ -1,6 +1,5 @@
 package com.sipibibu.aplhagramms.main.domain;
 
-import com.google.api.services.script.Script;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
