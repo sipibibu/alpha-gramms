@@ -1,7 +1,8 @@
-package com.nthokar.spring2023.userauth;
+package com.nthokar.spring2023.userauth.app;
 
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import com.nthokar.spring2023.userauth.app.entities.UserDetails;
 import   org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -21,7 +22,7 @@ public class TokenService  {
         this.jwtEncoder = jwtEncoder;
     }
 
-    public String generateAccessToken(CustomUsrDetails usrDetails) {
+    public String generateAccessToken(UserDetails usrDetails) {
         Instant now = Instant.now();
         String scope = usrDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -37,7 +38,7 @@ public class TokenService  {
         return this.jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
-    public String generateRefreshToken(CustomUsrDetails usrDetails) {
+    public String generateRefreshToken(UserDetails usrDetails) {
         Instant now = Instant.now();
         String scope = usrDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)

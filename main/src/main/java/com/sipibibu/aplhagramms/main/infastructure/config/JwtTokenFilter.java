@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @Component
 @Order(1)
@@ -28,7 +29,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         // Get authorization header and validate
         final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (header.isEmpty() || !header.startsWith("Bearer ")) {
+        if (Objects.isNull(header) || !header.startsWith("Bearer ")) {
             chain.doFilter(request, response);
             return;
         }

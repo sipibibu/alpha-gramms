@@ -1,4 +1,4 @@
-package com.nthokar.spring2023.userauth;
+package com.nthokar.spring2023.userauth.app;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

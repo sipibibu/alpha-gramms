@@ -1,4 +1,4 @@
-package com.nthokar.spring2023.userauth;
+package com.nthokar.spring2023.userauth.infrastructure;
 
 import com.sun.net.httpserver.HttpServer;
 import org.springframework.web.bind.annotation.GetMapping;
