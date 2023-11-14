@@ -1,15 +1,14 @@
 package com.sipibibu.aplhagramms.main.infastructure;
 
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sipibibu.aplhagramms.main.app.entities.FormEntity;
 import com.sipibibu.aplhagramms.main.app.services.FormsService;
-import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import java.time.LocalDateTime;
 
 @RestController
@@ -17,18 +16,46 @@ import java.time.LocalDateTime;
 public class FormController {
     @Autowired
     private FormsService formsService;
-/*String title, Long companyId, String shortDisc, String fullDisc,
-                                 LocalDateTime createTime, LocalDateTime start, LocalDateTime end*/
+    ObjectMapper objectMapper=new ObjectMapper();
+    public FormController(FormsService fService){
+        objectMapper.findAndRegisterModules();
+        formsService=fService;
+    }
+
     @PostMapping("/create")
-    public ResponseEntity create(){
+    public ResponseEntity<String> create(@RequestParam String title, @RequestParam Long companyId,
+                                         @RequestParam String shortDisc, @RequestParam String fullDisc,
+                                         @RequestParam LocalDateTime createTime, @RequestParam LocalDateTime start,
+                                         @RequestParam LocalDateTime end){
         try{
             return ResponseEntity.status(HttpStatusCode.valueOf(200))
-                    .body(formsService.create("bb", 1L,
-                            "shortDisc", "fullDisc",
-                            LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now().plusHours(1)));
+                    .body( objectMapper.writeValueAsString(
+                            formsService.create(title, companyId,
+                            shortDisc, fullDisc,
+                            LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now().plusHours(1))));
         }
         catch (Exception e){
-            return ResponseEntity.status(200).body(e.getMessage());
+            return ResponseEntity.status(500).body(e.getMessage());
         }
     }
+    @PutMapping("/add")
+    public ResponseEntity<String> addQuest(Long qId,Long fId){
+        try{
+            formsService.addQuestion(qId, fId);
+            return  ResponseEntity.ok("Ok");
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+    @GetMapping("/get")
+    public ResponseEntity<String> get(Long id){
+        try{
+            return ResponseEntity.ok(objectMapper.writeValueAsString(formsService.get(id)));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
 }

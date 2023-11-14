@@ -5,7 +5,7 @@ server:
 spring:
   sql.init.mode: always
   datasource:
-    url: jdbc:postgresql://localhost:5432/alpha
+    url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
 
     password: secret

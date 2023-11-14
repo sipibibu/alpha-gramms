@@ -1,3 +1,4 @@
+/*
 package com.sipibibu.aplhagramms.main.infastructure;
 
 import com.sipibibu.aplhagramms.main.app.entities.UserEntity;
@@ -25,3 +26,4 @@ public class UserController {
         return "hello";
     }
 }
+*/

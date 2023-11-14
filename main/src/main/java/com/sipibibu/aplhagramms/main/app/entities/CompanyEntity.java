@@ -18,18 +18,16 @@ public class CompanyEntity {
     @Id
     @GeneratedValue
     private Long id;
-    @Column(name="name")
-    private String name;
-    @OneToMany
-    @JoinColumn(name = "managers")
-    private List<ManagerEntity> managers;
+/*    @Column(name="name")
+    private String name;*/
 
-    public void setName(String newName){
+
+/*    public void setName(String newName){
         if(newName.replaceAll("\\W","").length()==newName.length())
             name=newName;
         throw new RuntimeException("Incorrect name");
-    }
-    public List<ManagerEntity> getManagers(){
+    }*/
+ /*   public List<ManagerEntity> getManagers(){
         return List.copyOf(managers);
     }
     public void setManagers(List<ManagerEntity> managers) throws RuntimeException{
@@ -46,5 +44,5 @@ public class CompanyEntity {
                 addManager(manager);
             else throw new RuntimeException("One of the managers is null");
         }
-    }
+    }*/
 }

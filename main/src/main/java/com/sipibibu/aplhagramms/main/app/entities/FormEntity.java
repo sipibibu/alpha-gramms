@@ -18,21 +18,22 @@ import java.util.List;
 public class FormEntity {
     @Id
     @GeneratedValue
+    @Column(name="id",nullable = false)
     private Long id;
     @ManyToOne
     @JoinColumn(name = "companies")
     private CompanyEntity company;
     @Column(name = "title")
     private String title;
-    @Column(name = "shtDesc")
+    @Column(name = "shortDescription")
     private String shortDescription;
-    @Column(name = "fDesc")
+    @Column(name = "fullDescription")
     private String fullDescription;
-    @Column(name = "start")
+    @Column(name = "startingAt")
     private LocalDateTime startingAt;
-    @Column(name = "end")
+    @Column(name = "closingAt")
     private LocalDateTime closingAt;
-    @Column(name = "upd")
+    @Column(name = "updatedAt")
     private LocalDateTime updatedAt;
     @OneToMany
     @JoinColumn(name="questions")

@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Entity
 @Getter
-@Table(name = "managers")
+@Table(name = "managers_gg")/**/
 public class ManagerEntity {
     @Id
     @GeneratedValue
