@@ -1,11 +1,12 @@
-package com.sipibibu.aplhagramms.main.domain.forms;
+package com.sipibibu.aplhagramms.main.domain;
 
 import jakarta.persistence.Id;
+import lombok.Getter;
 
 import java.util.Set;
 
+@Getter
 public class Question {
-    @Id
     Long id;
     String title;
     String description;
