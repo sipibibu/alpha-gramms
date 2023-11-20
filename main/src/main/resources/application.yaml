@@ -1,26 +1,21 @@
+rsa.private-key: private.pem
+rsa.public-key: public.pem
+
 server:
   port: ${PORT:8012}
 
 
 spring:
+  sql.init.mode: always
   datasource:
-    # H2 database configuration.
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:alpha_test
-    username: sa
-    password:
+    url: jdbc:postgresql://localhost:5432/main
+    username: postgres
 
-  # H2 database console configuration.
-  h2:
-    console:
-      settings:
-        web-allow-others: true
-      path: /h2-console
-      enabled: true
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: 306419862275-oo2ha43k7hmh2c5h2plrda0q4jn3fsjq.apps.googleusercontent.com
-            client-secret: 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
+    password: secret
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create-drop
+
