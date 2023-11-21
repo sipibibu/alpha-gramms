@@ -1,4 +1,4 @@
-package com.example.gateway;
+package com.sipibibu.gateway;//package com.sipibibu.gateway;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
