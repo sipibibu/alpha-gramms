@@ -79,7 +79,7 @@ jobs:
         name: gateway-jar
         path: gateway/build/libs/gateway-0.0.1-SNAPSHOT.jar
 
-  push_to_registry main:
+  push_to_registry:
     needs: [build]
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
