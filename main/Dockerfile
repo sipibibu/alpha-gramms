@@ -4,7 +4,7 @@ LABEL authors="zhvl0"
 WORKDIR app
 
 
-COPY ./main-jar.jar app.jar
+COPY ./main/main-jar.jar app.jar
 
 
 ENTRYPOINT ["java","-jar", "app.jar"]
