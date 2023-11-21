@@ -1,6 +1,7 @@
 package com.sipibibu.aplhagramms.main.app.entities;
 
-import com.sipibibu.aplhagramms.main.domain.Question;
+import com.sipibibu.aplhagramms.main.domain.IQuestion;
+import com.sipibibu.aplhagramms.main.domain.models.Question;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -11,13 +12,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name="questions")
 @NoArgsConstructor
-public class QuestionEntity {
+public class QuestionEntity implements IQuestion {
     @Id
     private Long id;
-    public  QuestionEntity(Question q){
-        this.id=q.getId();
-    }
-    public Question toQuestion() {
-        return null;
-    }
+
 }

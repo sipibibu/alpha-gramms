@@ -1,12 +1,10 @@
-package com.sipibibu.aplhagramms.main.domain;
+package com.sipibibu.aplhagramms.main.domain.models;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.Objects;
 
 @NoArgsConstructor
 public class Company {

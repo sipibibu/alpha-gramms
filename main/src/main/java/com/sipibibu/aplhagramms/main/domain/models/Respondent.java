@@ -1,5 +1,6 @@
-package com.sipibibu.aplhagramms.main.domain;
+package com.sipibibu.aplhagramms.main.domain.models;
 
+import com.sipibibu.aplhagramms.main.domain.Gender;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
