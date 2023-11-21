@@ -1,0 +1,181 @@
+openapi: "3.0.3"
+info:
+  title: "alpha_gramms API"
+  description: "alpha_gramms API"
+  version: "1.0.0"
+servers:
+  - url: "https://alpha_gramms"
+paths:
+  /api/**: { }
+  /auth/**: { }
+  /api/form/add:
+    put:
+      summary: "PUT api/form/add"
+      operationId: "addQuest"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /api/form/create:
+    post:
+      summary: "POST api/form/create"
+      operationId: "create"
+      parameters:
+        - name: "title"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+        - name: "companyId"
+          in: "query"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /api/form/get:
+    get:
+      summary: "GET api/form/get"
+      operationId: "get"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /auth/login:
+    post:
+      summary: "POST auth/login"
+      operationId: "login"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+  /auth/register/manager:
+    post:
+      summary: "POST auth/register/manager"
+      operationId: "registerManager"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /auth/register/respondent:
+    post:
+      summary: "POST auth/register/respondent"
+      operationId: "registerRespondent"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /auth/token/refresh:
+    get:
+      summary: "GET auth/token/refresh"
+      operationId: "refreshToken"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/RefreshTokenResponse"
+  /auth/validate:
+    post:
+      summary: "POST auth/validate"
+      operationId: "validate"
+      parameters:
+        - name: "token"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /auth/admin:
+    get:
+      summary: "GET auth/admin"
+      operationId: "homeAdmin"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /auth/user:
+    get:
+      summary: "GET auth/user"
+      operationId: "homeUser"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+components:
+  schemas:
+    LoginRequest:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+        password:
+          type: "string"
+    LoginResponse:
+      type: "object"
+      properties:
+        message:
+          type: "string"
+        access_jwt_token:
+          type: "string"
+        refresh_jwt_token:
+          type: "string"
+    RefreshTokenResponse:
+      type: "object"
+      properties:
+        access_jwt_token:
+          type: "string"
+        refresh_jwt_token:
+          type: "string"

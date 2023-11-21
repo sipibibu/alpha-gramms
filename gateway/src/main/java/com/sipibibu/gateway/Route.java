@@ -7,17 +7,14 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class Route {
-
     @Bean
     public RouteLocator myRoutes(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route(p -> p
                         .path("/auth/**")
-                        .filters(f -> f.stripPrefix(1))
                         .uri("http://localhost:8090"))
                 .route(p -> p
                         .path("/api/**")
-                        .filters(f -> f.stripPrefix(1))
                         .uri("http://localhost:8012"))
                 .build();
     }

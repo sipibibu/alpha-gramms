@@ -1,7 +1,10 @@
 rsa.private-key: private.pem
 rsa.public-key: public.pem
 
+
 server:
+  servlet:
+    context-path: /api
   port: ${PORT:8012}
 
 
