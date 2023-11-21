@@ -1,6 +1,5 @@
-package com.sipibibu.aplhagramms.main.domain;
+package com.sipibibu.aplhagramms.main.domain.models;
 
-import jakarta.persistence.Id;
 import lombok.Getter;
 
 import java.util.Set;

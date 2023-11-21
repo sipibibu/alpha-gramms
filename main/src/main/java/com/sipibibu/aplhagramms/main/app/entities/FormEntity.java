@@ -1,10 +1,13 @@
 package com.sipibibu.aplhagramms.main.app.entities;
 
+import com.sipibibu.aplhagramms.main.domain.IForm;
+import com.sipibibu.aplhagramms.main.domain.IQuestion;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
+import org.antlr.v4.runtime.misc.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,7 +18,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Table(name="forms")
-public class FormEntity {
+public class FormEntity implements IForm {
     @Id
     @GeneratedValue
     @Column(name="id",nullable = false)
@@ -73,20 +76,23 @@ public class FormEntity {
         this.closingAt=closingAt;
         this.questions=new ArrayList<QuestionEntity>();
     }
-
-    public void setTitle(@NotNull String newTitle) throws  RuntimeException{
+    @Override
+    public void setTitle(String newTitle) throws  RuntimeException{
         if (!newTitle.replaceAll("[\\W\\n]", "").isBlank())
             title = newTitle.strip();
         else
             throw new RuntimeException("Incorrect title");
     }
-    public void addQuestion(QuestionEntity q){
-        this.questions.add(q);
+    @Override
+    public void addQuestion(@NonNull IQuestion q){
+        this.questions.add((QuestionEntity) q);
     }
+    @Override
     public void removeQuestion(Long qId){
         questions.removeIf(x-> x.getId().equals(id));
     }
-    public void setUpdatedAt(LocalDateTime upd){
+    @Override
+    public void setUpdatedAt(@NonNull LocalDateTime upd){
         if(upd.isAfter(startingAt) && upd.isBefore(closingAt))
             updatedAt=upd;
         else

@@ -6,8 +6,6 @@ import com.sipibibu.aplhagramms.main.app.entities.QuestionEntity;
 import com.sipibibu.aplhagramms.main.app.repositories.CompanyRepository;
 import com.sipibibu.aplhagramms.main.app.repositories.FormRepository;
 import com.sipibibu.aplhagramms.main.app.repositories.QuestionRepository;
-import com.sipibibu.aplhagramms.main.domain.Form;
-import jakarta.persistence.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

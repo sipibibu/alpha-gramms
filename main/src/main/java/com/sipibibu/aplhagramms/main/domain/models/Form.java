@@ -1,14 +1,14 @@
-package com.sipibibu.aplhagramms.main.domain;
+package com.sipibibu.aplhagramms.main.domain.models;
 
 
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.jetbrains.annotations.NotNull;
+
+
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter

@@ -1,5 +1,4 @@
 package com.sipibibu.aplhagramms.main.domain;
 
-public class Answer {
-
+public interface IUser {
 }
