@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.1.5'
+    id 'io.spring.dependency-management' version '1.1.3'
+}
+
+group = 'com.sipibibu'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    //spring
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.jetbrains:annotations:24.0.0'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.1'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    //security
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:3.1.5'
+    implementation 'org.springframework.security:spring-security-oauth2-resource-server:5.1.1.RELEASE'
+
+    //data
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly group: 'com.h2database', name: 'h2', version: '2.1.214'
+    implementation 'org.postgresql:postgresql'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
+    //utils
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    //
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
