@@ -86,17 +86,17 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
-      - name: Download jar from job build
+      - name: Download main-jar from job build
         uses: actions/download-artifact@v3
         with:
           name: main-jar
           path: ./main/
-      - name: Download jar from job build
+      - name: Download auth-jar from job build
         uses: actions/download-artifact@v3
         with:
           name: auth-jar
           path: ./auth/
-      - name: Download jar from job build
+      - name: Download gateway-jar from job build
         uses: actions/download-artifact@v3
         with:
           name: gateway-jar
