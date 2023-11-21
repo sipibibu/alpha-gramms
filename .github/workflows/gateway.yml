@@ -42,7 +42,7 @@ jobs:
     - name: upload built artifact
       uses: actions/upload-artifact@v3
       with:
-        name: main-jar
+        name: jar
         path: main/build/libs/main-0.0.1-SNAPSHOT.jar
 
     - name: Change wrapper permissions
@@ -59,7 +59,7 @@ jobs:
     - name: upload built artifact
       uses: actions/upload-artifact@v3
       with:
-        name: auth-jar
+        name: jar
         path: user-auth/build/libs/user-auth-0.0.1-SNAPSHOT.jar
 
     - name: Change wrapper permissions
@@ -76,7 +76,7 @@ jobs:
     - name: upload built artifact
       uses: actions/upload-artifact@v3
       with:
-        name: gateway-jar
+        name: jar
         path: gateway/build/libs/gateway-0.0.1-SNAPSHOT.jar
 
   push_to_registry main:
@@ -89,18 +89,9 @@ jobs:
       - name: Download jar from job build
         uses: actions/download-artifact@v3
         with:
-          name: main-jar
-          path: ./main/
-      - name: Download jar from job build
-        uses: actions/download-artifact@v3
-        with:
-          name: auth-jar
-          path: ./auth/
-      - name: Download jar from job build
-        uses: actions/download-artifact@v3
-        with:
-          name: gateway-jar
-          path: ./gateway/
+          name: jar
+          path: ./
+
       - name: check jar
         run: ls ./
       - name: Log in to Docker Hub
@@ -119,21 +110,7 @@ jobs:
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
           context: .
-          file: ./main/Dockerfile
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
-        with:
-          images: nthokar/auth
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
-        with:
-          context: .
-          file: ./auth/Dockerfile
+          file: ./Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
