@@ -86,23 +86,25 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
-      - name: Download jar from job build
+      - name: Download main-jar from job build
         uses: actions/download-artifact@v3
         with:
           name: main-jar
           path: ./main/
-      - name: Download jar from job build
+      - name: Download auth-jar from job build
         uses: actions/download-artifact@v3
         with:
           name: auth-jar
           path: ./auth/
-      - name: Download jar from job build
+      - name: Download gateway-jar from job build
         uses: actions/download-artifact@v3
         with:
           name: gateway-jar
           path: ./gateway/
       - name: check jar
         run: ls ./
+      - name: check jar
+        run: ls ./main/
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
         with:
@@ -133,10 +135,25 @@ jobs:
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
           context: .
-          file: ./auth/Dockerfile
+          file: ./user-auth/Dockerfile
           push: true
           tags: ${{ steps.meta2.outputs.tags }}
           labels: ${{ steps.meta2.outputs.labels }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta3
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: nthokar/gateway
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: .
+          file: ./gateway/Dockerfile
+          push: true
+          tags: ${{ steps.meta3.outputs.tags }}
+          labels: ${{ steps.meta3.outputs.labels }}
   deploy:
     needs: [ push_to_registry ]
     name: deploy
