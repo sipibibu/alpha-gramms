@@ -23,15 +23,11 @@ public class FormController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> create(@RequestParam String title, @RequestParam Long companyId,
-                                         @RequestParam String shortDisc, @RequestParam String fullDisc,
-                                         @RequestParam LocalDateTime createTime, @RequestParam LocalDateTime start,
-                                         @RequestParam LocalDateTime end){
+    public ResponseEntity<String> create(@RequestParam String title, @RequestParam Long companyId){
         try{
             return ResponseEntity.status(HttpStatusCode.valueOf(200))
                     .body( objectMapper.writeValueAsString(
-                            formsService.create(title, companyId,
-                            shortDisc, fullDisc,
+                            formsService.create(title, companyId,"","",
                             LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now().plusHours(1))));
         }
         catch (Exception e){
