@@ -139,14 +139,21 @@ jobs:
           push: true
           tags: ${{ steps.meta2.outputs.tags }}
           labels: ${{ steps.meta2.outputs.labels }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta3
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: nthokar/gateway
+
       - name: Build and push Docker image
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
           context: .
           file: ./gateway/Dockerfile
           push: true
-          tags: gateway
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta3.outputs.tags }}
+          labels: ${{ steps.meta3.outputs.labels }}
   deploy:
     needs: [ push_to_registry ]
     name: deploy
