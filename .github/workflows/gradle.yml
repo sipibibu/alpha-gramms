@@ -124,7 +124,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
       - name: Extract metadata (tags, labels) for Docker
-        id: meta
+        id: meta2
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           images: nthokar/auth
@@ -135,8 +135,8 @@ jobs:
           context: .
           file: ./auth/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta2.outputs.tags }}
+          labels: ${{ steps.meta2.outputs.labels }}
   deploy:
     needs: [ push_to_registry ]
     name: deploy
