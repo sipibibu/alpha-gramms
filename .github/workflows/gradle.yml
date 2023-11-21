@@ -9,7 +9,7 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "release" ]
+    branches: [ "release", "main"]
   pull_request:
     branches: [ "release" ]
 
@@ -42,8 +42,42 @@ jobs:
     - name: upload built artifact
       uses: actions/upload-artifact@v3
       with:
-        name: jar
+        name: main-jar
         path: main/build/libs/main-0.0.1-SNAPSHOT.jar
+
+    - name: Change wrapper permissions
+      run: chmod +x ./user-auth/gradlew
+    - name: Build with Gradle
+      uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
+      with:
+        arguments: build
+        build-root-directory: ./user-auth/
+    - name: check jar
+      run: |
+        ls ./user-auth/build/libs/
+
+    - name: upload built artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: auth-jar
+        path: user-auth/build/libs/user-auth-0.0.1-SNAPSHOT.jar
+
+    - name: Change wrapper permissions
+      run: chmod +x ./gateway/gradlew
+    - name: Build with Gradle
+      uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
+      with:
+        arguments: build
+        build-root-directory: ./gateway/
+    - name: check jar
+      run: |
+        ls ./gateway/build/libs/
+
+    - name: upload built artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: gateway-jar
+        path: gateway/build/libs/gateway-0.0.1-SNAPSHOT.jar
 
   push_to_registry:
     needs: [build]
@@ -55,9 +89,18 @@ jobs:
       - name: Download jar from job build
         uses: actions/download-artifact@v3
         with:
-          name: jar
-          path: ./
-
+          name: main-jar
+          path: ./main/
+      - name: Download jar from job build
+        uses: actions/download-artifact@v3
+        with:
+          name: auth-jar
+          path: ./auth/
+      - name: Download jar from job build
+        uses: actions/download-artifact@v3
+        with:
+          name: gateway-jar
+          path: ./gateway/
       - name: check jar
         run: ls ./
       - name: Log in to Docker Hub
@@ -76,10 +119,24 @@ jobs:
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
           context: .
-          file: ./Dockerfile
+          file: ./main/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta2
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: nthokar/auth
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: .
+          file: ./auth/Dockerfile
+          push: true
+          tags: ${{ steps.meta2.outputs.tags }}
+          labels: ${{ steps.meta2.outputs.labels }}
   deploy:
     needs: [ push_to_registry ]
     name: deploy
