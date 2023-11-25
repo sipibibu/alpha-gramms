@@ -1,5 +1,3 @@
-rsa.private-key: private.pem
-rsa.public-key: public.pem
 server:
   servlet:
     context-path: /auth

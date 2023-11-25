@@ -29,6 +29,11 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 
+import java.security.*;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.RSAPublicKeySpec;
+
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
 @Configuration
@@ -37,8 +42,12 @@ public class AppSecurityConfig {
 
     private final RsaProperties rsaKeys;
 
-    public AppSecurityConfig(RsaProperties rsaKeys){
-        this.rsaKeys = rsaKeys;
+    public AppSecurityConfig(RsaProperties rsaKeys) throws NoSuchAlgorithmException {
+        KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+        generator.initialize(2048);
+        KeyPair pair = generator.generateKeyPair();
+
+        this.rsaKeys = new RsaProperties((RSAPrivateKey) pair.getPrivate(), (RSAPublicKey) pair.getPublic());
     }
 
     @Bean

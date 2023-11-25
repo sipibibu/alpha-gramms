@@ -1,6 +1,5 @@
 package com.sipibibu.aplhagramms.main.infastructure.config;
 
-import com.nimbusds.jose.proc.SecurityContext;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
