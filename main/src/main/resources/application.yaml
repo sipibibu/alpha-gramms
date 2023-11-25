@@ -5,13 +5,14 @@ rsa.public-key: public.pem
 server:
   servlet:
     context-path: /api
+
   port: ${PORT:8012}
 
 
 spring:
   sql.init.mode: always
   datasource:
-    url: jdbc:postgresql://localhost:5432/main
+    url: jdbc:postgresql://${POSTGRES_URL:localhost:5432}/main
     username: postgres
 
     password: secret

@@ -16,6 +16,12 @@ public abstract class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
+    @Column(name="firstname")
+    protected String firstname;
+
+    @Column(name="lastname")
+    protected String lastname;
+
     @Column(name="email")
     protected String email;
 

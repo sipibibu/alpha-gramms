@@ -163,4 +163,4 @@ jobs:
         uses: actions/checkout@v4
       - name: deploy
         run: |
-            microk8s kubectl delete pods --all -n chess
+            microk8s kubectl delete pods --all -n alpha-gramms

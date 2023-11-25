@@ -51,20 +51,20 @@ public class AuthController {
     }
 
     @PostMapping("/register/respondent")
-    public ResponseEntity<String> registerRespondent(@RequestBody LoginRequest request) {
+    public ResponseEntity<String> registerRespondent(@RequestBody RegisterRequest request) {
         try {
-            userDetailsService.register(Respondent.newRespondent(request.username, request.password));
-            return ResponseEntity.ok().body("");
+            userDetailsService.register(Respondent.newRespondent(request.firstname, request.lastname ,request.email, request.password));
+            return ResponseEntity.ok().build();
         }
         catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
     @PostMapping("/register/manager")
-    public ResponseEntity<String> registerManager(@RequestBody LoginRequest request) {
+    public ResponseEntity<String> registerManager(@RequestBody RegisterRequest request) {
         try {
-            userDetailsService.register(Manager.newManager(request.username, request.password));
-            return ResponseEntity.ok().body("");
+            userDetailsService.register(Manager.newManager(request.firstname, request.lastname ,request.email, request.password));
+            return ResponseEntity.ok().build();
         }
         catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -76,6 +76,7 @@ public class AuthController {
         return tokenService.parseToken(token).toString();
     }
     record LoginRequest(String username, String password) {}
+    record RegisterRequest(String firstname, String lastname, String email, String password) {}
     record LoginResponse(String message, String access_jwt_token, String refresh_jwt_token) {}
     record RefreshTokenResponse(String access_jwt_token, String refresh_jwt_token) {}
 
