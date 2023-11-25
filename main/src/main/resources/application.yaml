@@ -12,9 +12,8 @@ server:
 spring:
   sql.init.mode: always
   datasource:
-    url: jdbc:postgresql://${POSTGRES_URL}/main
+    url: jdbc:postgresql://${POSTGRES_URL}/postgres
     username: postgres
-
     password: secret
   jpa:
     show-sql: true
