@@ -12,7 +12,7 @@ server:
 spring:
   sql.init.mode: always
   datasource:
-    url: jdbc:postgresql://${POSTGRES_URL:localhost:5432}/main
+    url: jdbc:postgresql://${POSTGRES_URL}/main
     username: postgres
 
     password: secret
