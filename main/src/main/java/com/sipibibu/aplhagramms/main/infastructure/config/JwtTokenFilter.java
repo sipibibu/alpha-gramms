@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +22,9 @@ import java.util.Objects;
 @Component
 @Order(1)
 public class JwtTokenFilter extends OncePerRequestFilter {
+    @Value("${services.gateway}")
+    String gatewayUrl;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -41,7 +45,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         HttpEntity<MultiValueMap<String, String>> requestRest = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
-        var validateResponse = restTemplate.postForEntity("http://localhost:8090/validate", requestRest, String.class);
+        var validateResponse = restTemplate.postForEntity(gatewayUrl + "auth/validate", requestRest, String.class);
         var body = validateResponse.getBody();
         var context = SecurityContextHolder.getContext();
         context.setAuthentication(new CustomAuthentication(body));
