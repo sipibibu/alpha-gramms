@@ -1,5 +1,7 @@
-package com.nthokar.spring2023.userauth.app.entities;
+package com.nthokar.spring2023.userauth.app;
 
+import com.nthokar.spring2023.userauth.app.entities.Role;
+import com.nthokar.spring2023.userauth.app.entities.User;
 import jakarta.persistence.Entity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,7 +32,7 @@ public class UserDetails implements org.springframework.security.core.userdetail
     public String getPassword() {return user.getPassword();}
 
     @Override
-    public String getUsername() {return user.getEmail();}
+    public String getUsername() {return String.format("%s %s", user.getFirstname(), user.getLastname());}
 
     @Override
     public boolean isAccountNonExpired() {return true;}

@@ -1,7 +1,6 @@
 package com.nthokar.spring2023.userauth.app;
 
 import com.nthokar.spring2023.userauth.app.entities.User;
-import com.nthokar.spring2023.userauth.app.entities.UserDetails;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

@@ -1,6 +1,5 @@
 package com.nthokar.spring2023.userauth.app;
 
-import com.nthokar.spring2023.userauth.app.entities.UserDetails;
 import com.nthokar.spring2023.userauth.app.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;

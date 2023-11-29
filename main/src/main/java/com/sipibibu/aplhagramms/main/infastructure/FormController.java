@@ -44,7 +44,7 @@ public class FormController {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
-    @GetMapping("/get")
+    @GetMapping("с")
     public ResponseEntity<String> get(Long id){
         try{
             return ResponseEntity.ok(objectMapper.writeValueAsString(formsService.get(id)));

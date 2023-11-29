@@ -2,7 +2,7 @@ package com.nthokar.spring2023.userauth.infrastructure;
 
 import com.nthokar.spring2023.userauth.app.entities.Manager;
 import com.nthokar.spring2023.userauth.app.entities.Respondent;
-import com.nthokar.spring2023.userauth.app.entities.UserDetails;
+import com.nthokar.spring2023.userauth.app.UserDetails;
 import com.nthokar.spring2023.userauth.app.MyUserDetailsService;
 import com.nthokar.spring2023.userauth.app.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
