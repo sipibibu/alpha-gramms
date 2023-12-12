@@ -9,8 +9,11 @@ import java.util.ArrayList;
 
 public interface IForm {
 
-    public void setTitle( String newTitle) throws  RuntimeException;
-    public void addQuestion(@NonNull IQuestion q);
-    public void removeQuestion(Long qId);
-    public void setUpdatedAt(@NonNull LocalDateTime upd);
+     void setTitle( String newTitle) throws  RuntimeException;
+     void addQuestion(@NonNull IQuestion q);
+     void removeQuestion(Long qId);
+     void setUpdatedAt(@NonNull LocalDateTime upd);
+     void setDate(LocalDateTime start,LocalDateTime end);
+     void deleteQuestion(Long questId);
+     void setDescription(String shortDesc,String fullDesc);
 }

@@ -1,3 +1,4 @@
+/*
 package com.sipibibu.aplhagramms.main.app.entities;
 
 import com.sipibibu.aplhagramms.main.domain.ICompany;
@@ -44,17 +45,21 @@ public class CompanyEntity implements ICompany {
     @Override
     public void setManagers(@NonNull List<IManager> managers) throws RuntimeException{
         if(managers.stream().noneMatch(Objects::isNull))
-            /*
-            /DERMO
             */
+/*
+            /DERMO
+            *//*
+
             this.managers=managers.stream().map(x->(ManagerEntity)x).toList();
         else throw new RuntimeException("Some  of managers is Null");
     }
     @Override
     public void addManager(@NonNull IManager manager){
-        /*
-        * DERMO
         */
+/*
+        * DERMO
+        *//*
+
         this.managers.add((ManagerEntity)manager);
     }
     @Override
@@ -66,3 +71,4 @@ public class CompanyEntity implements ICompany {
         }
     }
 }
+*/

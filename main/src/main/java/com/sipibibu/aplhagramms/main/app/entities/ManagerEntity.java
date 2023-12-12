@@ -1,3 +1,4 @@
+/*
 package com.sipibibu.aplhagramms.main.app.entities;
 
 import com.sipibibu.aplhagramms.main.domain.ICompany;
@@ -14,7 +15,9 @@ import java.util.List;
 
 @Entity
 @Getter
-@Table(name = "managers_gg")/**/
+@Table(name = "managers_gg")*/
+/**//*
+
 public class ManagerEntity implements IManager {
     @Id
     @GeneratedValue
@@ -105,3 +108,4 @@ public class ManagerEntity implements IManager {
 
     }
 }
+*/

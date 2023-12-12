@@ -3,11 +3,10 @@ package com.sipibibu.aplhagramms.main.app.entities;
 import com.sipibibu.aplhagramms.main.domain.IForm;
 import com.sipibibu.aplhagramms.main.domain.IQuestion;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import org.antlr.v4.runtime.misc.NotNull;
+
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,9 +22,8 @@ public class FormEntity implements IForm {
     @GeneratedValue
     @Column(name="id",nullable = false)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "companies")
-    private CompanyEntity company;
+    @Column(name = "managerId")
+    private Long manager;
     @Column(name = "title")
     private String title;
     @Column(name = "shortDescription")
@@ -43,49 +41,62 @@ public class FormEntity implements IForm {
     private List<QuestionEntity> questions;
 
     public FormEntity(Long id, String title, String shortDescription,
-                String fullDescription, CompanyEntity company,
+                String fullDescription, Long manager,
                 LocalDateTime startingAt, LocalDateTime closingAt,
                 LocalDateTime updatedAt, List<QuestionEntity> questions){
         this.id=id;
         setTitle(title);
         this.shortDescription=shortDescription;
         this.fullDescription=fullDescription;
-        this.company=company;
+        this.manager=manager;
         this.startingAt=startingAt;
         this.closingAt=closingAt;
         setUpdatedAt(updatedAt);
         this.questions=questions;
     }
-    public FormEntity(Long id,String title,CompanyEntity company,
+    public FormEntity(Long id,String title,Long manager,LocalDateTime created,
                 LocalDateTime startingAt,LocalDateTime closingAt){
         this.id=id;
         setTitle(title);
-        this.company=company;
+        this.manager=manager;
+        this.updatedAt=created;
         this.startingAt=startingAt;
         this.closingAt=closingAt;
         this.questions=new ArrayList<>();
     }
     public FormEntity(String title,String shortDescription,
-                String fullDescription,CompanyEntity company,
-                LocalDateTime startingAt,LocalDateTime closingAt){
+                String fullDescription,Long manager,LocalDateTime created,
+                LocalDateTime startingAt,LocalDateTime closingAt,List<QuestionEntity> questions){
         setTitle(title);
         this.shortDescription=shortDescription;
         this.fullDescription=fullDescription;
-        this.company=company;
+        this.manager=manager;
+        this.updatedAt=created;
         this.startingAt=startingAt;
         this.closingAt=closingAt;
-        this.questions=new ArrayList<QuestionEntity>();
+        this.questions=questions;
+    }
+    public FormEntity(String title,String shortDescription,
+                      String fullDescription,Long manager,LocalDateTime created){
+        setTitle(title);
+        this.shortDescription=shortDescription;
+        this.fullDescription=fullDescription;
+        this.manager=manager;
+        this.updatedAt=created;
     }
     @Override
     public void setTitle(String newTitle) throws  RuntimeException{
-        if (!newTitle.replaceAll("[\\W\\n]", "").isBlank())
+        if (!newTitle.replaceAll("[\\W\\n]", "").isBlank()) {
             title = newTitle.strip();
+            setUpdatedAt(LocalDateTime.now());
+        }
         else
             throw new RuntimeException("Incorrect title");
     }
     @Override
     public void addQuestion(@NonNull IQuestion q){
         this.questions.add((QuestionEntity) q);
+        setUpdatedAt(LocalDateTime.now());
     }
     @Override
     public void removeQuestion(Long qId){
@@ -97,5 +108,25 @@ public class FormEntity implements IForm {
             updatedAt=upd;
         else
             throw new RuntimeException("Wrong upd date");
+    }
+    @Override
+    public void setDate(LocalDateTime start,LocalDateTime end){
+        if(start.isBefore(end)){
+            this.startingAt=start;
+            this.closingAt=end;
+            setUpdatedAt(LocalDateTime.now());
+        }
+        else throw new RuntimeException("Start is after end");
+    }
+    @Override
+    public void deleteQuestion(Long questId){
+        questions.removeIf(x->x.getId().equals(questId));
+        setUpdatedAt(LocalDateTime.now());
+    }
+    @Override
+    public void setDescription(String shortDesc,String fullDesc){
+        shortDescription=shortDesc;
+        fullDescription=fullDesc;
+        setUpdatedAt(LocalDateTime.now());
     }
 }
