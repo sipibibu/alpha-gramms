@@ -32,7 +32,7 @@ public class QuestionEntity implements IQuestion {
     @OneToMany
     @JoinColumn(name="answerVars")
     private List<AnswerEntity> ansVar;
-    @JoinColumn
+    @Column(name="type")
     private QuestionType type;
 
     public QuestionEntity(String questionText,Boolean isReq,QuestionType type){
@@ -45,6 +45,10 @@ public class QuestionEntity implements IQuestion {
     public void addAnswer(@NotNull AnswerEntity answer){
         ansVar.add(answer);
     }
+    public void addAnswers(@NotNull List<AnswerEntity> answers){
+        ansVar.addAll(answers);
+    }
+
     public void deleteAnswer(Long answerId){
         ansVar.removeIf(x->x.getId().equals(id));
     }

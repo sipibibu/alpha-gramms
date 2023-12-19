@@ -1,6 +1,8 @@
 package com.sipibibu.aplhagramms.main.app.services;
 
+import com.sipibibu.aplhagramms.main.Assembler;
 import com.sipibibu.aplhagramms.main.app.dto.FormDTO;
+import com.sipibibu.aplhagramms.main.app.dto.QuestionDTO;
 import com.sipibibu.aplhagramms.main.app.entities.FormEntity;
 import com.sipibibu.aplhagramms.main.app.entities.QuestionEntity;
 import com.sipibibu.aplhagramms.main.app.repositories.FormRepository;
@@ -18,10 +20,10 @@ public class FormsService {
     private FormRepository formRepository;
     @Autowired
     private QuestionRepository questionRepository;
+    @Autowired
+    private Assembler assembler;
     public FormEntity create(FormDTO formDTO){
-
-        FormEntity form=new FormEntity(formDTO.title(), "",formDTO.fullDescription(),formDTO.managerId(),
-                LocalDateTime.now(),formDTO.start(),formDTO.end(),formDTO.questions());
+        FormEntity form=assembler.makeForm(formDTO);
         formRepository.save(form);
         return form;
     }
@@ -34,6 +36,12 @@ public class FormsService {
         FormEntity form=formRepository.findById(fId)
                 .orElseThrow(()->new RuntimeException("No form with id: " +fId));
         form.addQuestion(question);
+        formRepository.save(form);
+    }
+    public void addQuestion(QuestionDTO dto, Long fId){
+        FormEntity form=formRepository.findById(fId)
+                .orElseThrow(()->new RuntimeException("No form with id: " +fId));
+        form.addQuestion(assembler.makeQuestion(dto));
         formRepository.save(form);
     }
     public FormEntity get(Long id){

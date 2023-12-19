@@ -7,9 +7,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record FormDTO(String title,
-                       Long managerId,
+                       Long companyId,
                        String fullDescription,
                        LocalDateTime start,
                        LocalDateTime end,
-                       List<QuestionEntity> questions) {
+                       List<QuestionDTO> questions) {
 }

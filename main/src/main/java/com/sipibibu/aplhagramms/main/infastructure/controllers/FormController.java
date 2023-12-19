@@ -3,6 +3,7 @@ package com.sipibibu.aplhagramms.main.infastructure.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sipibibu.aplhagramms.main.app.dto.FormDTO;
+import com.sipibibu.aplhagramms.main.app.dto.QuestionDTO;
 import com.sipibibu.aplhagramms.main.app.entities.FormEntity;
 import com.sipibibu.aplhagramms.main.app.entities.QuestionEntity;
 import com.sipibibu.aplhagramms.main.app.services.FormsService;
@@ -36,10 +37,20 @@ public class FormController {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
-    @PutMapping("/add")
-    public ResponseEntity<String> addQuest(Long qId,Long fId){
+    @PutMapping("/addExist")
+    public ResponseEntity<String> addExistingQuest(Long qId,Long fId){
         try{
             formsService.addQuestion(qId, fId);
+            return  ResponseEntity.ok("Ok");
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+    @PutMapping("/add")
+    public ResponseEntity<String> addQuest(QuestionDTO dto, Long fid){
+        try{
+            formsService.addQuestion(dto,fid);
             return  ResponseEntity.ok("Ok");
         }
         catch (Exception e){
