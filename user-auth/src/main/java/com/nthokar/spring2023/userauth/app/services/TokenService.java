@@ -2,6 +2,7 @@ package com.nthokar.spring2023.userauth.app.services;
 
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import com.nthokar.spring2023.userauth.app.UserDetails;
 import   org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;

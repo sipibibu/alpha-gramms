@@ -1,5 +1,6 @@
 package com.nthokar.spring2023.userauth.app.services;
 
+import com.nthokar.spring2023.userauth.app.UserDetails;
 import com.nthokar.spring2023.userauth.app.entities.*;
 import com.nthokar.spring2023.userauth.app.repos.InterestRepository;
 import com.nthokar.spring2023.userauth.app.repos.UserRepository;

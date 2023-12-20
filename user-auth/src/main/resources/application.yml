@@ -1,7 +1,4 @@
-server:
-  servlet:
-    context-path: /auth
-  port: ${PORT:8090}
+port: ${PORT:8090}
 spring:
   sql.init.mode: always
   datasource:

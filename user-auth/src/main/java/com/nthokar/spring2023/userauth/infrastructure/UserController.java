@@ -31,8 +31,8 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/setEducation")
-    public ResponseEntity<String>  setEducation(Integer age, Authentication authentication) {
+    @PutMapping("/setAge")
+    public ResponseEntity<String> setAge(Integer age, Authentication authentication) {
         var user = userService.getUser(authentication.getName());
         user.setAge(age);
         return ResponseEntity.ok().build();

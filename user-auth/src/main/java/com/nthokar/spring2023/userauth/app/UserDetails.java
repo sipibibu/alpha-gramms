@@ -28,13 +28,13 @@ public class UserDetails implements org.springframework.security.core.userdetail
         return authorities;
     }
 
-    public String getImage() {return user.image; }
+    public String getImage() {return user.getImage(); }
 
     @Override
     public String getPassword() {return user.getPassword();}
 
     @Override
-    public String getUsername() {return String.format("%s %s", user.getFirstname(), user.getLastname());}
+    public String getUsername() {return String.format("%s %s", user.getFirstName(), user.getLastName());}
 
     @Override
     public boolean isAccountNonExpired() {return true;}
