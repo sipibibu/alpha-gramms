@@ -1,4 +1,4 @@
-package com.nthokar.spring2023.userauth.app;
+package com.nthokar.spring2023.userauth.app.services;
 
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;

@@ -26,6 +26,8 @@ public class UserDetails implements org.springframework.security.core.userdetail
         return authorities;
     }
 
+    public String getImage() {return user.image; }
+
     @Override
     public String getPassword() {return user.getPassword();}
 
