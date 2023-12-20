@@ -29,15 +29,17 @@ public class Manager extends User {
 
     protected Manager() {
     }
-    private Manager(String email, String password, Set<Role> roles){
+    private Manager(String email, String firstName, String lastName, String password, Set<Role> roles){
         this.email = email;
         this.password = password;
         this.roles = roles;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
-    public static Manager newManager(String email, String password) {
+    public static Manager newManager(String email, String firstName, String lastName, String password) {
         var encoder = new BCryptPasswordEncoder();
         var encodedPass = encoder.encode(password);
 
-        return new Manager(email, encodedPass, new HashSet<>(){{add(Role.Manager);}});
+        return new Manager(email, firstName, lastName, encodedPass, new HashSet<>(){{add(Role.Manager);}});
     }
 }

@@ -20,20 +20,19 @@ public class Respondent extends User {
 
     protected Respondent(){
     }
-    private Respondent(String firstname, String lastname, String email, String password, Set<Role> roles){
-        this.firstname = firstname;
-        this.lastname = lastname;
-
+    private Respondent(String email, String firstName, String lastName, String password, Set<Role> roles){
         this.email = email;
         this.password = password;
         this.roles = roles;
-    }
-    public static Respondent newRespondent(String firstname, String lastname, String email, String password) {
-        var encoder = new BCryptPasswordEncoder();
-        var encodedPass = encoder.encode(password);
-        return new Respondent(firstname, lastname, email, encodedPass, new HashSet<>(){{add(Role.Respondent);}});
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
+    public static Respondent newRespondent(String email, String firstName, String lastName, String password) {
+        var encoder = new BCryptPasswordEncoder();
+        var encodedPass = encoder.encode(password);
+        return new Respondent(email, firstName, lastName, encodedPass, new HashSet<>(){{add(Role.Respondent);}});
+    }
 
 
     public void setInterest(List<Interest> interests) {

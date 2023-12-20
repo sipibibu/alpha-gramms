@@ -53,7 +53,7 @@ public class AuthController {
     @PostMapping("/register/respondent")
     public ResponseEntity<String> registerRespondent(@RequestBody LoginRequest request) {
         try {
-            userDetailsService.register(Respondent.newRespondent(request.email, request.password));
+            userDetailsService.register(Respondent.newRespondent(request.email, request.firstName, request.lastName, request.password));
             return ResponseEntity.ok().body("");
         }
         catch (Exception e){
@@ -63,7 +63,7 @@ public class AuthController {
     @PostMapping("/register/manager")
     public ResponseEntity<String> registerManager(@RequestBody LoginRequest request) {
         try {
-            userDetailsService.register(Manager.newManager(request.email, request.password));
+            userDetailsService.register(Manager.newManager(request.email, request.firstName, request.lastName, request.password));
             return ResponseEntity.ok().body("");
         }
         catch (Exception e){
@@ -75,7 +75,7 @@ public class AuthController {
     public String validate(@RequestParam String token){
         return tokenService.parseToken(token).toString();
     }
-    record LoginRequest(String email, String password) {}
+    record LoginRequest(String email, String firstName, String lastName, String password) {}
     record LoginResponse(String message, String access_jwt_token, String refresh_jwt_token) {}
     record RefreshTokenResponse(String access_jwt_token, String refresh_jwt_token) {}
 
