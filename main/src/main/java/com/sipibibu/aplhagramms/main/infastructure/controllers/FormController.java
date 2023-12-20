@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sipibibu.aplhagramms.main.app.dto.FormDTO;
 import com.sipibibu.aplhagramms.main.app.dto.QuestionDTO;
 import com.sipibibu.aplhagramms.main.app.entities.FormEntity;
+import com.sipibibu.aplhagramms.main.app.entities.InterestsForm;
 import com.sipibibu.aplhagramms.main.app.entities.QuestionEntity;
 import com.sipibibu.aplhagramms.main.app.services.FormsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,5 +121,43 @@ public class FormController {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
-
+    @GetMapping("/getInterests")
+    public ResponseEntity<String> getInterests(Long formId){
+        try {
+            return ResponseEntity.ok(objectMapper.writeValueAsString(formsService.getInterests(formId)));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+    @PutMapping("/addInterest")
+    public ResponseEntity<String> addInterest(Long formId,Long interestId){
+        try {
+            formsService.addInterest(formId, interestId);
+            return ResponseEntity.ok("ok");
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+    @DeleteMapping("/deleteInterest")
+    public ResponseEntity<String> deleteInterest(Long formId, Long interestsId){
+        try {
+            formsService.deleteInterest(formId, interestsId);
+            return ResponseEntity.ok("ok");
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+    @PutMapping("/setInterests")
+    public ResponseEntity<String> setInterests(Long formId, List<Long> interest){
+        try {
+            formsService.setInterests(formId, interest);
+            return ResponseEntity.ok("ok");
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
 }

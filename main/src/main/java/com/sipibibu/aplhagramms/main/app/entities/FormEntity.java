@@ -39,11 +39,14 @@ public class FormEntity implements IForm {
     @OneToMany
     @JoinColumn(name="questions")
     private List<QuestionEntity> questions;
+    @OneToMany
+    @JoinColumn(name="interests")
+    private List<InterestsForm> interests;
 
     public FormEntity(Long id, String title, String shortDescription,
                 String fullDescription, Long manager,
                 LocalDateTime startingAt, LocalDateTime closingAt,
-                LocalDateTime updatedAt, List<QuestionEntity> questions){
+                LocalDateTime updatedAt, List<QuestionEntity> questions,List<InterestsForm> interests){
         this.id=id;
         setTitle(title);
         this.shortDescription=shortDescription;
@@ -53,6 +56,7 @@ public class FormEntity implements IForm {
         this.closingAt=closingAt;
         setUpdatedAt(updatedAt);
         this.questions=questions;
+        this.interests=interests;
     }
     public FormEntity(Long id,String title,Long manager,LocalDateTime created,
                 LocalDateTime startingAt,LocalDateTime closingAt){
@@ -128,5 +132,21 @@ public class FormEntity implements IForm {
         shortDescription=shortDesc;
         fullDescription=fullDesc;
         setUpdatedAt(LocalDateTime.now());
+    }
+    @Override
+    public  void addInterest(Long id){
+        if(this.interests.stream().map(InterestsForm::getInterst).noneMatch(x->x.equals(id)))
+            this.interests.add(new InterestsForm(id,this));
+    }
+    @Override
+    public  void deleteInterest(Long id){
+        interests.removeIf(x-> x.getInterst().equals(id));
+    }
+
+    @Override
+    public void setInterests(List<Long> interests){
+        for(var i:interests){
+            addInterest(i);
+        }
     }
 }

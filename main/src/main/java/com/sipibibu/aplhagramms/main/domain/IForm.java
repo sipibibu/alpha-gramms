@@ -6,6 +6,7 @@ import lombok.NonNull;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public interface IForm {
 
@@ -16,4 +17,7 @@ public interface IForm {
      void setDate(LocalDateTime start,LocalDateTime end);
      void deleteQuestion(Long questId);
      void setDescription(String shortDesc,String fullDesc);
+     void addInterest(Long id);
+     void deleteInterest(Long id);
+     void setInterests(List<Long> interests);
 }

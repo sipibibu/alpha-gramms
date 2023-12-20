@@ -4,6 +4,7 @@ import com.sipibibu.aplhagramms.main.Assembler;
 import com.sipibibu.aplhagramms.main.app.dto.FormDTO;
 import com.sipibibu.aplhagramms.main.app.dto.QuestionDTO;
 import com.sipibibu.aplhagramms.main.app.entities.FormEntity;
+import com.sipibibu.aplhagramms.main.app.entities.InterestsForm;
 import com.sipibibu.aplhagramms.main.app.entities.QuestionEntity;
 import com.sipibibu.aplhagramms.main.app.repositories.FormRepository;
 import com.sipibibu.aplhagramms.main.app.repositories.QuestionRepository;
@@ -74,6 +75,28 @@ public class FormsService {
         form.setTitle(title);
         formRepository.save(form);
     }
+    public List<Long> getInterests(Long formId){
+        FormEntity form=formRepository.findById(formId)
+                .orElseThrow(()->new RuntimeException("No form with id: "+formId));
+        return form.getInterests().stream().map(InterestsForm::getInterst).toList();
+    }
+    public void addInterest(Long formId,Long interestId){
+        FormEntity form=formRepository.findById(formId)
+                .orElseThrow(()->new RuntimeException("No form with id: "+formId));
+        form.addInterest(interestId);
+        formRepository.save(form);
+    }
 
-
+    public void deleteInterest(Long formId, Long interestsId){
+        FormEntity form=formRepository.findById(formId)
+                    .orElseThrow(()->new RuntimeException("No form with id: "+formId));
+        form.deleteInterest(interestsId);
+        formRepository.save(form);
+    }
+    public void setInterests(Long formId, List<Long> interest){
+        FormEntity form=formRepository.findById(formId)
+                .orElseThrow(()->new RuntimeException("No form with id: "+formId));
+        form.setInterests(interest);
+        formRepository.save(form);
+    }
 }
