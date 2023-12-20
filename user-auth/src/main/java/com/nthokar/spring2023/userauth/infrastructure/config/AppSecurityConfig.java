@@ -6,9 +6,9 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import com.nthokar.spring2023.userauth.app.MyUserDetailsService;
+import com.nthokar.spring2023.userauth.app.services.MyUserDetailsService;
 import com.nthokar.spring2023.userauth.app.RsaProperties;
-import com.nthokar.spring2023.userauth.app.TokenService;
+import com.nthokar.spring2023.userauth.app.services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +20,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -86,13 +85,9 @@ public class AppSecurityConfig {
         return http.formLogin(AbstractHttpConfigurer::disable) // <-- this will disable the login route
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeRequests(auth -> auth
+                                .requestMatchers("/addForm").hasAuthority("SCOPE_Manager")
                                 .anyRequest().permitAll()
-/*                        .requestMatchers("/login").permitAll()
-                        .requestMatchers("/register").permitAll()
-                        .requestMatchers("/token/refresh").permitAll()
-                        .requestMatchers("/admin").hasAuthority("SCOPE_adm")
-                        .anyRequest().authenticated()*/)
-
+                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer :: jwt )
                 .build();

@@ -1,7 +1,10 @@
 package com.nthokar.spring2023.userauth.app.entities;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.Type;
 
 import java.util.Set;
 
@@ -9,6 +12,13 @@ import java.util.Set;
 @Entity
 @Table(name="users")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+//@JsonTypeInfo(
+//        use = JsonTypeInfo.Id.NAME,
+//        include = JsonTypeInfo.As.PROPERTY,
+//        property = "type")
+//@JsonSubTypes({
+//        @Type(value = Manager.class, name = "manager"),
+//})
 public abstract class User {
 
     @Id
@@ -16,17 +26,28 @@ public abstract class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-    @Column(name="firstname")
-    protected String firstname;
+    @Column(name="firstName")
+    protected String firstName;
 
-    @Column(name="lastname")
-    protected String lastname;
+    @Column(name="lastName")
+    protected String lastName;
+
+    @Column(name = "age")
+    protected Integer age;
+
+    @Column(name = "education")
+    protected String education;
+
 
     @Column(name="email")
     protected String email;
 
     @Column(name="password")
     protected String password;
+
+    //BASE64
+    @Column(name="image")
+    protected String image;
 
 //    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 //    @JoinTable(name = "user_role",

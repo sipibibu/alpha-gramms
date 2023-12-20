@@ -1,4 +1,4 @@
-package com.nthokar.spring2023.userauth.app;
+package com.nthokar.spring2023.userauth.app.repos;
 
 import com.nthokar.spring2023.userauth.app.entities.User;
 import org.springframework.data.repository.CrudRepository;
