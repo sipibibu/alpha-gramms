@@ -25,14 +25,14 @@ public class UserController {
     }
 
     @PutMapping("/setEducation")
-    public ResponseEntity<String> setEducation(String education, Authentication authentication) {
+    public ResponseEntity<String> setEducation(@RequestBody String education, Authentication authentication) {
         var user = userService.getUser(authentication.getName());
         user.setEducation(education);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/setAge")
-    public ResponseEntity<String> setAge(Integer age, Authentication authentication) {
+    public ResponseEntity<String> setAge(@RequestBody Integer age, Authentication authentication) {
         var user = userService.getUser(authentication.getName());
         user.setAge(age);
         return ResponseEntity.ok().build();
