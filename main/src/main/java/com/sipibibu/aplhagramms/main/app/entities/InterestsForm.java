@@ -18,12 +18,7 @@ public class InterestsForm {
     @Column(name="interestId")
     private Long interst;
 
-    @Column(name="formId")
-    @ManyToOne
-    private FormEntity form;
-
-    public InterestsForm(Long interst,FormEntity form){
+    public InterestsForm(Long interst){
         this.interst=interst;
-        this.form=form;
     }
 }

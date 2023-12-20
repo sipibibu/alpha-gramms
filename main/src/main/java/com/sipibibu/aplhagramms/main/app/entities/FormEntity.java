@@ -11,6 +11,7 @@ import lombok.NonNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Entity
@@ -78,7 +79,9 @@ public class FormEntity implements IForm {
         this.updatedAt=created;
         this.startingAt=startingAt;
         this.closingAt=closingAt;
-        this.questions=questions;
+        //ne udalyat'
+        if (Objects.isNull(questions)) this.questions = new ArrayList<>();
+        else this.questions=questions;
     }
     public FormEntity(String title,String shortDescription,
                       String fullDescription,Long manager,LocalDateTime created){
@@ -108,10 +111,7 @@ public class FormEntity implements IForm {
     }
     @Override
     public void setUpdatedAt(@NonNull LocalDateTime upd){
-        if(upd.isAfter(startingAt) && upd.isBefore(closingAt))
-            updatedAt=upd;
-        else
-            throw new RuntimeException("Wrong upd date");
+        updatedAt=upd;
     }
     @Override
     public void setDate(LocalDateTime start,LocalDateTime end){
@@ -136,7 +136,7 @@ public class FormEntity implements IForm {
     @Override
     public  void addInterest(Long id){
         if(this.interests.stream().map(InterestsForm::getInterst).noneMatch(x->x.equals(id)))
-            this.interests.add(new InterestsForm(id,this));
+            this.interests.add(new InterestsForm(id));
     }
     @Override
     public  void deleteInterest(Long id){

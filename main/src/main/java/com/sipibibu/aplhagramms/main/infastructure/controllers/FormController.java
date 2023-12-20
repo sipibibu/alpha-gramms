@@ -29,7 +29,7 @@ public class FormController {
 
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody FormDTO formDTO){
-        try{
+        try {
             return ResponseEntity.status(HttpStatusCode.valueOf(200))
                     .body( objectMapper.writeValueAsString(
                             formsService.create(formDTO)));
@@ -48,8 +48,8 @@ public class FormController {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
-    @PutMapping("/add")
-    public ResponseEntity<String> addQuest(QuestionDTO dto, Long fid){
+    @PutMapping("/add/{fid}")
+    public ResponseEntity<String> addQuest(@RequestBody QuestionDTO dto,@PathVariable Long fid){
         try{
             formsService.addQuestion(dto,fid);
             return  ResponseEntity.ok("Ok");
@@ -58,8 +58,8 @@ public class FormController {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
-    @GetMapping("/get")
-    public ResponseEntity<String> get(Long id){
+    @GetMapping("/get/{id}")
+    public ResponseEntity<String> get(@PathVariable Long id){
         try{
             return ResponseEntity.ok(objectMapper.writeValueAsString(formsService.get(id)));
         }

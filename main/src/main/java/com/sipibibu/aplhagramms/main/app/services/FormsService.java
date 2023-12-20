@@ -42,7 +42,9 @@ public class FormsService {
     public void addQuestion(QuestionDTO dto, Long fId){
         FormEntity form=formRepository.findById(fId)
                 .orElseThrow(()->new RuntimeException("No form with id: " +fId));
-        form.addQuestion(assembler.makeQuestion(dto));
+        var question = assembler.makeQuestion(dto);
+        questionRepository.save(question);
+        form.addQuestion(question);
         formRepository.save(form);
     }
     public FormEntity get(Long id){
