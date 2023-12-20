@@ -21,6 +21,14 @@ public class Route {
 //                        .uri("http://localhost:8090"))
                         .uri(authUrl))
                 .route(p -> p
+                        .path("/account/**")
+//                        .uri("http://localhost:8090"))
+                        .uri(authUrl))
+                .route(p -> p
+                        .path("/company/**")
+//                        .uri("http://localhost:8090"))
+                        .uri(authUrl))
+                .route(p -> p
                         .path("/api/**")
                         //.uri("http://localhost:8012"))
                         .uri(apiUrl))
