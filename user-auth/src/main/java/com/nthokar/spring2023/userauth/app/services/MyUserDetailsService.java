@@ -4,10 +4,14 @@ import com.nthokar.spring2023.userauth.app.UserDetails;
 import com.nthokar.spring2023.userauth.app.entities.*;
 import com.nthokar.spring2023.userauth.app.repos.InterestRepository;
 import com.nthokar.spring2023.userauth.app.repos.UserRepository;
+import com.nthokar.spring2023.userauth.infrastructure.UserController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +51,18 @@ public class MyUserDetailsService implements UserDetailsService {
         user.setImage(image);
         userRepo.save(user);
     }
+
+    public void setAge(User user,Integer age) {
+        user.setAge(age);
+        userRepo.save(user);
+    }
+
+
+    public void setEducation(User user,String education) {
+        user.setEducation(education);
+        userRepo.save(user);
+    }
+
 
     public void setInterests(User user,List<String> interestsNames) {
         if (!(user instanceof Respondent respondent)) throw new RuntimeException();

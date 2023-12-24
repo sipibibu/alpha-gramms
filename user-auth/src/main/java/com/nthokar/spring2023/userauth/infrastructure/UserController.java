@@ -31,7 +31,7 @@ public class UserController {
     public ResponseEntity<String> setEducation(@RequestBody educationDTO educationDTO, Authentication authentication) {
         try {
             var user = userService.getUser(authentication.getName());
-            user.setEducation(educationDTO.education);
+            userService.setEducation(user, educationDTO.education);
             return ResponseEntity.ok().body(mapper.writeValueAsString(educationDTO));
         }
         catch (Exception e) {
@@ -44,6 +44,7 @@ public class UserController {
         try {
             Integer ageInt = Integer.parseInt(ageDTO.age);
             var user = userService.getUser(authentication.getName());
+            userService.setAge(user, ageInt);
             user.setAge(ageInt);
             return ResponseEntity.ok().body(mapper.writeValueAsString(ageDTO));
         }
