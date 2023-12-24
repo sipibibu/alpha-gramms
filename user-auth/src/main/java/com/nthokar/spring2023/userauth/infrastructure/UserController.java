@@ -1,14 +1,14 @@
 package com.nthokar.spring2023.userauth.infrastructure;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nthokar.spring2023.userauth.app.entities.User;
-import com.nthokar.spring2023.userauth.app.services.InterestService;
 import com.nthokar.spring2023.userauth.app.services.MyUserDetailsService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -16,6 +16,8 @@ import java.util.List;
 public class UserController {
     @Autowired
     MyUserDetailsService userService;
+    ObjectMapper mapper = new ObjectMapper();
+
     @PutMapping("/setImage")
     public ResponseEntity<String> setImage(String base64, Authentication authentication) {
         var user = userService.getUser(authentication.getName());
@@ -24,24 +26,36 @@ public class UserController {
 
     }
 
+    @SneakyThrows
     @PutMapping("/setEducation")
-    public ResponseEntity<String> setEducation(@RequestBody String education, Authentication authentication) {
-        var user = userService.getUser(authentication.getName());
-        user.setEducation(education);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<String> setEducation(@RequestBody educationDTO educationDTO, Authentication authentication) {
+        try {
+            var user = userService.getUser(authentication.getName());
+            user.setEducation(educationDTO.education);
+            return ResponseEntity.ok().body(mapper.writeValueAsString(educationDTO));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("/setAge")
-    public ResponseEntity<String> setAge(@RequestParam Integer age, Authentication authentication) {
-        var user = userService.getUser(authentication.getName());
-        user.setAge(age);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<String> setAge(@RequestBody ageDTO ageDTO, Authentication authentication) {
+        try {
+            Integer ageInt = Integer.parseInt(ageDTO.age);
+            var user = userService.getUser(authentication.getName());
+            user.setAge(ageInt);
+            return ResponseEntity.ok().body(mapper.writeValueAsString(ageDTO));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/image")
-    public ResponseEntity<String> getImage(@RequestParam String email) {
+    public ResponseEntity<String> getImage(@RequestBody emailDTO emailDTO) {
         try {
-            var user = userService.getUser(email);
+            var user = userService.getUser(emailDTO.email);
             return ResponseEntity.ok().body(user.getImage());
         }
         catch (Exception e) {
@@ -49,11 +63,11 @@ public class UserController {
         }
     }
     @PutMapping("/setInterests")
-    public ResponseEntity<String> setInterest(@RequestParam List<String> interest, Authentication authentication) {
+    public ResponseEntity<String> setInterest(@RequestBody interestsDTO interestsDTO, Authentication authentication) {
         try {
             var user = userService.getUser(authentication.getName());
-            userService.setInterests(user, interest);
-            return ResponseEntity.ok().build();
+            userService.setInterests(user, interestsDTO.interests);
+            return ResponseEntity.ok().body(mapper.writeValueAsString(interestsDTO));
         }
         catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -72,7 +86,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/")
+    @GetMapping("/get")
     public ResponseEntity<User> getCurrent(Authentication authentication) {
         try {
             var user = userService.getUser(authentication.getName());
@@ -85,4 +99,9 @@ public class UserController {
             //return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    record educationDTO (String education) {};
+    record ageDTO (String age) {};
+    record emailDTO (String email) {};
+    record interestsDTO (List<String> interests) {};
 }
