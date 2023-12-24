@@ -1,5 +1,7 @@
-package com.nthokar.spring2023.userauth.app.entities;
+package com.nthokar.spring2023.userauth.app;
 
+import com.nthokar.spring2023.userauth.app.entities.Role;
+import com.nthokar.spring2023.userauth.app.entities.User;
 import jakarta.persistence.Entity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,6 +27,8 @@ public class UserDetails implements org.springframework.security.core.userdetail
         for(Role role : roles) {authorities.add(new SimpleGrantedAuthority(role.name()));}
         return authorities;
     }
+
+    public String getImage() {return user.getImage(); }
 
     @Override
     public String getPassword() {return user.getPassword();}
