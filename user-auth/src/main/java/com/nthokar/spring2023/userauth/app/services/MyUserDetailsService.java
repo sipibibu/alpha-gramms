@@ -68,11 +68,12 @@ public class MyUserDetailsService implements UserDetailsService {
         if (!(user instanceof Respondent respondent)) throw new RuntimeException();
         respondent.setInterest(new ArrayList<>());
         for (var interestName:interestsNames) {
-            if (interestService.isExist(interestName))
+            if (!interestService.isExist(interestName))
             {
-                var interest = interestService.get(interestName);
-                interest.ifPresent(respondent::addInterest);
+                interestService.registerInterest(interestName);
             }
+            var interest = interestService.get(interestName);
+            interest.ifPresent(respondent::addInterest);
         }
     }
 
