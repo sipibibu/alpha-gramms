@@ -5,12 +5,12 @@ server:
   port: ${PORT:8012}
 
 services:
-  gateway: ${GW_URL}
+  gateway: ${GW_URL:localhost:8080}
 
 spring:
   sql.init.mode: always
   datasource:
-    url: jdbc:postgresql://${POSTGRES_URL}/postgres
+    url: jdbc:postgresql://${POSTGRES_URL:localhost:5432}/postgres
     username: postgres
 
     password: secret
