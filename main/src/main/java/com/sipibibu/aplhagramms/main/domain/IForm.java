@@ -2,6 +2,7 @@ package com.sipibibu.aplhagramms.main.domain;
 
 
 
+import com.sipibibu.aplhagramms.main.app.entities.InterestsForm;
 import lombok.NonNull;
 
 import java.time.LocalDateTime;
@@ -17,7 +18,7 @@ public interface IForm {
      void setDate(LocalDateTime start,LocalDateTime end);
      void deleteQuestion(Long questId);
      void setDescription(String shortDesc,String fullDesc);
-     void addInterest(Long id);
+     void addInterest(InterestsForm interest);
      void deleteInterest(Long id);
-     void setInterests(List<Long> interests);
+     void setInterests(List<InterestsForm> interests);
 }

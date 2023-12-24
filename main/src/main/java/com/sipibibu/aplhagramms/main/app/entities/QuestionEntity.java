@@ -1,5 +1,6 @@
 package com.sipibibu.aplhagramms.main.app.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sipibibu.aplhagramms.main.domain.IQuestion;
 import com.sipibibu.aplhagramms.main.domain.QuestionType;
 import jakarta.persistence.*;
@@ -31,6 +32,7 @@ public class QuestionEntity implements IQuestion {
     private Boolean isReq;
     @OneToMany
     @JoinColumn(name="answerVars")
+    @JsonManagedReference
     private List<AnswerEntity> ansVar;
     @Column(name="type")
     private QuestionType type;

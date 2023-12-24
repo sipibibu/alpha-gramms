@@ -37,7 +37,7 @@ public class FormEntity implements IForm {
     private LocalDateTime closingAt;
     @Column(name = "updatedAt")
     private LocalDateTime updatedAt;
-    @OneToMany
+    @OneToMany(fetch=FetchType.LAZY)
     @JoinColumn(name="questions")
     private List<QuestionEntity> questions;
     @OneToMany
@@ -134,9 +134,9 @@ public class FormEntity implements IForm {
         setUpdatedAt(LocalDateTime.now());
     }
     @Override
-    public  void addInterest(Long id){
-        if(this.interests.stream().map(InterestsForm::getInterst).noneMatch(x->x.equals(id)))
-            this.interests.add(new InterestsForm(id));
+    public  void addInterest(InterestsForm interest){
+        if(this.interests.stream().map(InterestsForm::getInterst).noneMatch(x->x.equals(interest.getId())))
+            this.interests.add(interest);
     }
     @Override
     public  void deleteInterest(Long id){
@@ -144,7 +144,7 @@ public class FormEntity implements IForm {
     }
 
     @Override
-    public void setInterests(List<Long> interests){
+    public void setInterests(List<InterestsForm> interests){
         for(var i:interests){
             addInterest(i);
         }

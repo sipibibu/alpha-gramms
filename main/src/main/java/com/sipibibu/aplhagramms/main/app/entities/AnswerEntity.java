@@ -1,11 +1,13 @@
 package com.sipibibu.aplhagramms.main.app.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sipibibu.aplhagramms.main.domain.IAnswer;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name="answers")
@@ -23,6 +25,7 @@ public class AnswerEntity implements IAnswer {
     private String text;
     @ManyToOne
     @JoinColumn(name = "question")
+    @JsonBackReference
     private QuestionEntity question;
 
     public AnswerEntity(String text,QuestionEntity question){
