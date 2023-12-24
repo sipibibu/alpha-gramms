@@ -34,7 +34,7 @@ public class UserDetails implements org.springframework.security.core.userdetail
     public String getPassword() {return user.getPassword();}
 
     @Override
-    public String getUsername() {return String.format("%s %s", user.getFirstName(), user.getLastName());}
+    public String getUsername() {return user.getEmail();}
 
     @Override
     public boolean isAccountNonExpired() {return true;}
