@@ -75,6 +75,7 @@ public class MyUserDetailsService implements UserDetailsService {
             var interest = interestService.get(interestName);
             interest.ifPresent(respondent::addInterest);
         }
+        userRepo.save(user);
     }
 
     public void update(User userOld, User user) {
