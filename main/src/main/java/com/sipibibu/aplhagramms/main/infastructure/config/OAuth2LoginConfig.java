@@ -23,11 +23,10 @@ public class OAuth2LoginConfig {
         return http
                 .addFilterBefore(jwtTokenFilter, BasicAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests(
-//                authorize -> authorize
-//                        .anyRequest().authenticated()
-//
-//        )
+                .authorizeHttpRequests(
+                 authorize -> authorize
+                       .anyRequest().authenticated()
+      )
                 .build();
     }
 }
