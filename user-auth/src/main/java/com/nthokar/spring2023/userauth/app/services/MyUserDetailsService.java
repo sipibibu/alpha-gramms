@@ -30,7 +30,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
     public void register(User user) {
         if (user instanceof Manager) {
-            var company = companyService.create("my company", (Manager) user);
+            var company = companyService.create(String.format("%s's company", user.getEmail()), (Manager) user);
             ((Manager) user).setCompany(company);
             userRepo.save(user);
         }
