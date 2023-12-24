@@ -6,10 +6,12 @@ import com.sipibibu.aplhagramms.main.app.dto.FormDTO;
 import com.sipibibu.aplhagramms.main.app.dto.QuestionDTO;
 import com.sipibibu.aplhagramms.main.app.entities.FormEntity;
 import com.sipibibu.aplhagramms.main.app.services.FormService;
+import com.sun.net.httpserver.HttpContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
@@ -29,11 +31,11 @@ public class FormController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<String> create(@RequestBody FormDTO formDTO, JwtAuthenticationToken authentication){
-        try{
+    public ResponseEntity<String> create(@RequestBody FormDTO formDTO, Authentication auth){
+        try {
 
             FormEntity form = formService.create(formDTO);
-
+            var authentication = SecurityContextHolder.getContext().getAuthentication();
             RestTemplate restTemplate=new RestTemplate();
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);

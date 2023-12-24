@@ -72,7 +72,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/validate")
+        @PostMapping("/validate")
     public String validate(@RequestParam String token){
         return tokenService.parseToken(token).toString();
     }

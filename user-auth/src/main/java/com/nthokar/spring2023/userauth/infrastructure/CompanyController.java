@@ -36,9 +36,9 @@ public class CompanyController {
         return ResponseEntity.ok().build();
     }
     @PutMapping("/setDescription")
-    public ResponseEntity<String> setDescription(@RequestParam String description, Authentication authentication) {
+    public ResponseEntity<String> setDescription(@RequestBody descriptionDTO descriptionDTO, Authentication authentication) {
         var company = getManagerCompany(authentication.getName());
-        companyService.setDescription(company, description);
+        companyService.setDescription(company, descriptionDTO.description);
         return ResponseEntity.ok().build();
     }
     @PutMapping("/setImage")
@@ -49,9 +49,9 @@ public class CompanyController {
     }
 
     @PutMapping("/setTitle")
-    public ResponseEntity<String> setTitle(@RequestParam String title, Authentication authentication) {
+    public ResponseEntity<String> setTitle(@RequestBody titleDTO titleDTO, Authentication authentication) {
         var company = getManagerCompany(authentication.getName());
-        companyService.setTitle(company, title);
+        companyService.setTitle(company, titleDTO.title);
         return ResponseEntity.ok().build();
     }
 
@@ -65,4 +65,6 @@ public class CompanyController {
         Manager manager = (Manager) userService.getUser(username);
         return manager.getCompany();
     }
+    record descriptionDTO(String description) { }
+    record titleDTO(String title) { }
 }
