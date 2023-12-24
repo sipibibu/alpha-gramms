@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.w3c.dom.Text;
 
 @RestController
-@RequestMapping(value = "/quest", produces = "application/json")
+@RequestMapping(value = "/quests", produces = "application/json")
 public class QuestionsController {
 
     @Autowired

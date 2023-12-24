@@ -29,7 +29,15 @@ public class Route {
 //                        .uri("http://localhost:8090"))
                         .uri(authUrl))
                 .route(p -> p
-                        .path("/api/**")
+                        .path("/forms/**")
+                        //.uri("http://localhost:8012"))
+                        .uri(apiUrl))
+                .route(p -> p
+                        .path("/quests/**")
+                        //.uri("http://localhost:8012"))
+                        .uri(apiUrl))
+                .route(p -> p
+                        .path("/answers/**")
                         //.uri("http://localhost:8012"))
                         .uri(apiUrl))
                 .build();
