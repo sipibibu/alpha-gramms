@@ -36,7 +36,7 @@ public class Assembler {
     }
     public FormEntity makeForm(FormDTO dto){
         FormEntity form = new FormEntity(dto.title(), "",
-                dto.fullDescription(), dto.companyId(), LocalDateTime.now(),dto.start(),
+                dto.fullDescription(), LocalDateTime.now(),dto.start(),
                 dto.end(), makeQuestions(dto.questions()));
         return form;
     }

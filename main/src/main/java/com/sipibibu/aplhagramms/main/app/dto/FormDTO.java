@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record FormDTO(String title,
-                       Long companyId,
                        String fullDescription,
                        LocalDateTime start,
                        LocalDateTime end,

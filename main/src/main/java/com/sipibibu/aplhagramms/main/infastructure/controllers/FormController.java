@@ -4,11 +4,18 @@ package com.sipibibu.aplhagramms.main.infastructure.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sipibibu.aplhagramms.main.app.dto.FormDTO;
 import com.sipibibu.aplhagramms.main.app.dto.QuestionDTO;
+import com.sipibibu.aplhagramms.main.app.entities.FormEntity;
 import com.sipibibu.aplhagramms.main.app.services.FormsService;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,18 +24,31 @@ import java.util.List;
 public class FormController {
     @Autowired
     private FormsService formsService;
+    @Value("${services.gateway}")
+    String gatewayUrl;
     ObjectMapper objectMapper=new ObjectMapper();
     public FormController(FormsService fService){
         objectMapper.findAndRegisterModules();
         formsService=fService;
     }
 
+
     @PostMapping("/create")
-    public ResponseEntity<String> create(@RequestBody FormDTO formDTO){
+    public ResponseEntity<String> create(@RequestBody FormDTO formDTO, JwtAuthenticationToken authentication){
         try{
+
+            FormEntity form =formsService.create(formDTO);
+
+            RestTemplate restTemplate=new RestTemplate();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+            MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
+            map.add("token", authentication.getCredentials().toString());
+            HttpEntity<MultiValueMap<String, String>> requestRest = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+            restTemplate.postForEntity(gatewayUrl+"/addForm?formId="+form.getId(),requestRest,String.class);
+
             return ResponseEntity.status(HttpStatusCode.valueOf(200))
-                    .body( objectMapper.writeValueAsString(
-                            formsService.create(formDTO)));
+                    .body( objectMapper.writeValueAsString(form));
         }
         catch (Exception e){
             return ResponseEntity.status(500).body(e.getMessage());

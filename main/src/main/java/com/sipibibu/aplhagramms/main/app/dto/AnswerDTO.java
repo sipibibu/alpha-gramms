@@ -4,6 +4,5 @@ import lombok.Getter;
 
 
 public record AnswerDTO (
-    String text,
-    Long questId){
+    String text){
 }

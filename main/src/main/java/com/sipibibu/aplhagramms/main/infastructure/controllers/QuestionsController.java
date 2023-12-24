@@ -5,6 +5,7 @@ import com.sipibibu.aplhagramms.main.app.services.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.w3c.dom.Text;
 
 @RestController
 @RequestMapping(value = "/quest", produces = "application/json")
@@ -14,6 +15,9 @@ public class QuestionsController {
     private QuestionService service;
     ObjectMapper objectMapper=new ObjectMapper();
 
+    public record ScaleDto(String text, Boolean isReq,
+                           Long min,Long max,Long step,Long formId){}
+    public record QuestionDto(String text, Boolean isReq,Long formId){}
     @GetMapping("/get/{id}")
     public ResponseEntity<String> get(@PathVariable Long id){
         try{
@@ -23,11 +27,12 @@ public class QuestionsController {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
+
     @PostMapping("/createText")
-    public ResponseEntity<String> createTextQuestion(String text, Boolean isReq,Long formId){
+    public ResponseEntity<String> createTextQuestion(@RequestBody QuestionDto dto){
         try{
             return ResponseEntity.ok(objectMapper.writeValueAsString(
-                    service.createTextQuestion(text,isReq,formId)));
+                    service.createTextQuestion(dto.text,dto.isReq,dto.formId)));
 
         }
         catch (Exception e){
@@ -36,10 +41,10 @@ public class QuestionsController {
     }
 
     @PostMapping("/createRadio")
-    public ResponseEntity<String> createRadioQuestion(String text, Boolean isReq,Long formId){
+    public ResponseEntity<String> createRadioQuestion(@RequestBody QuestionDto dto){
         try{
             return ResponseEntity.ok(objectMapper.
-                    writeValueAsString(service.createRadioQuestion(text,isReq,formId)));
+                    writeValueAsString(service.createRadioQuestion(dto.text,dto.isReq,dto.formId)));
 
         }
         catch (Exception e){
@@ -47,10 +52,10 @@ public class QuestionsController {
         }
     }
     @PostMapping("/createCheckbox")
-    public ResponseEntity<String> createCheckboxQuestion(String text, Boolean isReq,Long formId){
+    public ResponseEntity<String> createCheckboxQuestion(@RequestBody QuestionDto dto){
         try{
             return ResponseEntity.ok(objectMapper.writeValueAsString(
-                    service.createCheckboxQuestion(text,isReq,formId)));
+                    service.createCheckboxQuestion(dto.text,dto.isReq,dto.formId)));
 
         }
         catch (Exception e){
@@ -58,11 +63,10 @@ public class QuestionsController {
         }
     }
     @PostMapping("/createScale")
-    public ResponseEntity<String> createScaleQuestion(String text, Boolean isReq,
-                                                      Long min,Long max,Long step,Long formId){
+    public ResponseEntity<String> createScaleQuestion(@RequestBody ScaleDto dto){
         try{
             return ResponseEntity.ok(objectMapper.writeValueAsString(
-                    service.createScaleQuestion(text,isReq,min,max,step,formId)));
+                    service.createScaleQuestion(dto.text,dto.isReq,dto.min,dto.max,dto.step,dto.formId)));
         }
         catch (Exception e){
             return ResponseEntity.status(500).body(e.getMessage());

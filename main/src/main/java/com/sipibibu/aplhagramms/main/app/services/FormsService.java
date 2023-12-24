@@ -33,6 +33,7 @@ public class FormsService {
     @Autowired
     private Assembler assembler;
     public FormEntity create(FormDTO formDTO){
+        //Запрашивать ID компании
         FormEntity form=assembler.makeForm(formDTO);
         if(!form.getQuestions().isEmpty()){
             questionRepository.saveAll(form.getQuestions());

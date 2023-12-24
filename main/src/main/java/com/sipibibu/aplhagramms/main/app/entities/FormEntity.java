@@ -23,8 +23,6 @@ public class FormEntity implements IForm {
     @GeneratedValue
     @Column(name="id",nullable = false)
     private Long id;
-    @Column(name = "managerId")
-    private Long manager;
     @Column(name = "title")
     private String title;
     @Column(name = "shortDescription")
@@ -45,37 +43,34 @@ public class FormEntity implements IForm {
     private List<InterestsForm> interests;
 
     public FormEntity(Long id, String title, String shortDescription,
-                String fullDescription, Long manager,
+                String fullDescription,
                 LocalDateTime startingAt, LocalDateTime closingAt,
                 LocalDateTime updatedAt, List<QuestionEntity> questions,List<InterestsForm> interests){
         this.id=id;
         setTitle(title);
         this.shortDescription=shortDescription;
         this.fullDescription=fullDescription;
-        this.manager=manager;
         this.startingAt=startingAt;
         this.closingAt=closingAt;
         setUpdatedAt(updatedAt);
         this.questions=questions;
         this.interests=interests;
     }
-    public FormEntity(Long id,String title,Long manager,LocalDateTime created,
+    public FormEntity(Long id,String title,LocalDateTime created,
                 LocalDateTime startingAt,LocalDateTime closingAt){
         this.id=id;
         setTitle(title);
-        this.manager=manager;
         this.updatedAt=created;
         this.startingAt=startingAt;
         this.closingAt=closingAt;
         this.questions=new ArrayList<>();
     }
     public FormEntity(String title,String shortDescription,
-                String fullDescription,Long manager,LocalDateTime created,
+                String fullDescription,LocalDateTime created,
                 LocalDateTime startingAt,LocalDateTime closingAt,List<QuestionEntity> questions){
         setTitle(title);
         this.shortDescription=shortDescription;
         this.fullDescription=fullDescription;
-        this.manager=manager;
         this.updatedAt=created;
         this.startingAt=startingAt;
         this.closingAt=closingAt;
@@ -84,11 +79,10 @@ public class FormEntity implements IForm {
         else this.questions=questions;
     }
     public FormEntity(String title,String shortDescription,
-                      String fullDescription,Long manager,LocalDateTime created){
+                      String fullDescription,LocalDateTime created){
         setTitle(title);
         this.shortDescription=shortDescription;
         this.fullDescription=fullDescription;
-        this.manager=manager;
         this.updatedAt=created;
     }
     @Override
