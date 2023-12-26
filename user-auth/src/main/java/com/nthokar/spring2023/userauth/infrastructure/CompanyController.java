@@ -80,7 +80,7 @@ public class CompanyController {
     public ResponseEntity<String> get(@PathVariable String name) {
         try {
             var company = companyService.get(name);
-            return ResponseEntity.ok().body(mapper.writeValueAsString(company));
+            return ResponseEntity.ok().body(mapper.writeValueAsString(company.get()));
         }
         catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
