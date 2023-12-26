@@ -37,7 +37,6 @@ public class FormController {
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody FormDTO formDTO){
         try{
-
             FormEntity form = formService.create(formDTO);
             Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
             RestTemplate restTemplate=new RestTemplate();

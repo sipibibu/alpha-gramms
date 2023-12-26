@@ -94,8 +94,7 @@ public class UserController {
             user.setPassword("");
             user.setId(null);
             return ResponseEntity.ok().body(user);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException();
             //return ResponseEntity.badRequest().body(e.getMessage());
         }

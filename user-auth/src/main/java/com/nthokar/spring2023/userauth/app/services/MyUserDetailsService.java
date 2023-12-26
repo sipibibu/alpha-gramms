@@ -33,6 +33,8 @@ public class MyUserDetailsService implements UserDetailsService {
     }
 
     public void register(User user) {
+        if (userRepo.findByEmail(user.getEmail()).isPresent())
+            throw new RuntimeException("user with that email already exists");
         if (user instanceof Manager) {
             var company = companyService.create(String.format("%s's company", user.getEmail()), (Manager) user);
             ((Manager) user).setCompany(company);

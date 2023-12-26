@@ -1,5 +1,6 @@
 package com.nthokar.spring2023.userauth.infrastructure;
 
+import com.nthokar.spring2023.userauth.app.entities.User;
 import com.nthokar.spring2023.userauth.app.services.CompanyService;
 import com.nthokar.spring2023.userauth.app.services.MyUserDetailsService;
 import com.nthokar.spring2023.userauth.app.entities.Company;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController()
@@ -55,14 +58,27 @@ public class CompanyController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{title}")
-    public ResponseEntity<Company> get(@PathVariable String title) {
-        var company = companyService.get(title);
+    @GetMapping("/{name}")
+    public ResponseEntity<Company> get(@PathVariable String name) {
+        var company = companyService.get(name);
         return company.map(value -> ResponseEntity.ok().body(value)).orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
+    @GetMapping("/forms/{name}")
+    public ResponseEntity<List<Form>> getForms(@PathVariable String name) {
+        try {
+            var company = companyService.get(name);
+            if (company.isEmpty()) throw new RuntimeException("company isn't exist");
+            var forms = company.get().getForms();
+            return ResponseEntity.ok().body(forms);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
     private Company getManagerCompany(String username) {
-        Manager manager = (Manager) userService.getUser(username);
+        var user = userService.getUser(username);
+        Manager manager = (Manager) user;
         return manager.getCompany();
     }
     record descriptionDTO(String description) { }
