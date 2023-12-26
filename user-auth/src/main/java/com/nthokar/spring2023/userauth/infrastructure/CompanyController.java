@@ -1,5 +1,6 @@
 package com.nthokar.spring2023.userauth.infrastructure;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nthokar.spring2023.userauth.app.entities.User;
 import com.nthokar.spring2023.userauth.app.services.CompanyService;
 import com.nthokar.spring2023.userauth.app.services.MyUserDetailsService;
@@ -22,6 +23,8 @@ public class CompanyController {
     @Autowired
     MyUserDetailsService userService;
 
+    ObjectMapper mapper = new ObjectMapper();
+
 //    @PostMapping("/create")
 //    public ResponseEntity<String> create(String title, UserDetails userDetails){
 //        try {
@@ -40,39 +43,60 @@ public class CompanyController {
     }
     @PutMapping("/setDescription")
     public ResponseEntity<String> setDescription(@RequestBody descriptionDTO descriptionDTO, Authentication authentication) {
-        var company = getManagerCompany(authentication.getName());
-        companyService.setDescription(company, descriptionDTO.description);
-        return ResponseEntity.ok().build();
+        try {
+            var company = getManagerCompany(authentication.getName());
+            companyService.setDescription(company, descriptionDTO.description);
+            return ResponseEntity.ok().body(mapper.writeValueAsString(descriptionDTO));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
     @PutMapping("/setImage")
     public ResponseEntity<String> setImage(@RequestParam String image, Authentication authentication) {
-        var company = getManagerCompany(authentication.getName());
-        companyService.setImage(company, image);
-        return ResponseEntity.ok().build();
+        try {
+            var company = getManagerCompany(authentication.getName());
+            companyService.setImage(company, image);
+            return ResponseEntity.ok().build();
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("/setTitle")
     public ResponseEntity<String> setTitle(@RequestBody titleDTO titleDTO, Authentication authentication) {
-        var company = getManagerCompany(authentication.getName());
-        companyService.setTitle(company, titleDTO.title);
-        return ResponseEntity.ok().build();
+        try {
+            var company = getManagerCompany(authentication.getName());
+            companyService.setTitle(company, titleDTO.title);
+            return ResponseEntity.ok().body(mapper.writeValueAsString(titleDTO));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/{name}")
-    public ResponseEntity<Company> get(@PathVariable String name) {
-        var company = companyService.get(name);
-        return company.map(value -> ResponseEntity.ok().body(value)).orElseGet(() -> ResponseEntity.badRequest().build());
+    public ResponseEntity<String> get(@PathVariable String name) {
+        try {
+            var company = companyService.get(name);
+            return ResponseEntity.ok().body(mapper.writeValueAsString(company));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 
     @GetMapping("/forms/{name}")
-    public ResponseEntity<List<Form>> getForms(@PathVariable String name) {
+    public ResponseEntity<String> getForms(@PathVariable String name) {
         try {
             var company = companyService.get(name);
             if (company.isEmpty()) throw new RuntimeException("company isn't exist");
             var forms = company.get().getForms();
-            return ResponseEntity.ok().body(forms);
+            return ResponseEntity.ok().body(mapper.writeValueAsString(forms));
         } catch (Exception e) {
-            throw new RuntimeException();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
