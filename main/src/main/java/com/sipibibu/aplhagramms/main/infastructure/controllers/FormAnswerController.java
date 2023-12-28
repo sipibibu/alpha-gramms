@@ -3,18 +3,14 @@ package com.sipibibu.aplhagramms.main.infastructure.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sipibibu.aplhagramms.main.app.dto.FormAnswerDTO;
-import com.sipibibu.aplhagramms.main.app.dto.QuestionAnswerDTO;
 import com.sipibibu.aplhagramms.main.app.entities.formanswers.QuestionAnswerEntity;
 import com.sipibibu.aplhagramms.main.app.services.FormAnswersService;
 import com.sipibibu.aplhagramms.main.infastructure.clients.UserClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/forms/answers", produces = "application/json")
