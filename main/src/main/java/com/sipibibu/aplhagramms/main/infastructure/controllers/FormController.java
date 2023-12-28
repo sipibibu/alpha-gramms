@@ -54,7 +54,7 @@ public class FormController {
             HttpEntity<String> requestRest = new HttpEntity<String>( headers);
             FormEntity form = formService.create(formDTO);
 
-            restTemplate.postForEntity("http://"+gatewayUrl+"/company/addForm?formId="+form.getId(),
+            restTemplate.postForEntity(gatewayUrl+"/company/addForm?formId="+form.getId(),
                     requestRest,String.class);
             return ResponseEntity.status(HttpStatusCode.valueOf(200))
                     .body( objectMapper.writeValueAsString(form));
