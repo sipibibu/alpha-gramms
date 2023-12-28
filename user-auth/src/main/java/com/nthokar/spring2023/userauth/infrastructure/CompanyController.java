@@ -99,6 +99,26 @@ public class CompanyController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    @GetMapping("/getByFormId/{formId}")
+    public ResponseEntity<String> getByFormId(@PathVariable Long formId){
+        try {
+            return  ResponseEntity.ok(mapper.writeValueAsString(companyService.getByForm(formId)));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/getByFormIds")
+    public ResponseEntity<String> getByFormIds(@RequestBody List<Long> formId){
+        try {
+            return  ResponseEntity.ok(mapper.writeValueAsString(companyService.getByForms(formId)));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 
     private Company getManagerCompany(String username) {
         var user = userService.getUser(username);

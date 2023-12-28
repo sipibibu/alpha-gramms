@@ -20,11 +20,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.jetbrains:annotations:24.0.0'
-    implementation 'org.jetbrains:annotations:24.0.0'
-    implementation 'org.jetbrains:annotations:24.0.0'
-    implementation 'org.jetbrains:annotations:24.0.0'
-    implementation 'org.jetbrains:annotations:24.0.0'
-    implementation 'org.jetbrains:annotations:24.0.0'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.1'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
@@ -38,10 +33,14 @@ dependencies {
     implementation 'org.postgresql:postgresql'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
+    //Feign
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.0.4'
+    implementation "io.github.openfeign:feign-hc5:13.1"
     //utils
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     //
+    implementation 'org.junit.jupiter:junit-jupiter:5.8.1'
 }
 
 tasks.named('test') {

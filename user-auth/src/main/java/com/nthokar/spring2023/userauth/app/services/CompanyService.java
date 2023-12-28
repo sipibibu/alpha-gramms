@@ -9,6 +9,10 @@ import com.nthokar.spring2023.userauth.app.entities.Manager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.xml.crypto.dsig.keyinfo.KeyValue;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -48,6 +52,21 @@ public class CompanyService {
         companyRepo.save(company);
         company.setTitle(title);
     }
+    public  Company getByForm(Long formId){
+        return companyRepo.findByFormsIsContaining(new Form(formId))
+                .orElseThrow(()->new RuntimeException("No company containing form with id: "+formId));
+    }
+    public  HashMap<Long,CompanyDTO> getByForms(List<Long> formId){
+        HashMap<Long,CompanyDTO> res = new HashMap<>();
+        for(var x:formId){
+            var comp=companyRepo.findByFormsIsContaining(new Form(x)).orElse(null);
+            if(Objects.nonNull(comp))
+                res.put(x,new CompanyDTO(comp.getId(),comp.getTitle()));
+            else
+                res.put(x,null);
+        }
+        return res;
+    }
     public Optional<Company> get(Long id) {
         return companyRepo.findById(id);
     }
@@ -55,4 +74,7 @@ public class CompanyService {
     public Optional<Company> get(String title) {
         return companyRepo.findByTitle(title);
     }
+    public record CompanyDTO(Long id, String name){
+    }
+
 }

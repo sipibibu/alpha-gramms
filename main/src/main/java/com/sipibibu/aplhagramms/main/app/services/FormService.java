@@ -43,13 +43,16 @@ public class FormService {
         formRepository.save(form);
         return form;
     }
+    //+company id
     public FormEntity get(Long id){
         return formRepository.findById(id)
                 .orElseThrow(()->new RuntimeException("No form with id: "+id));
     }
+    //po compnay
     public  List<FormEntity> getAll(){
         return StreamSupport.stream(formRepository.findAll().spliterator(),false).toList();
     }
+    //zapisatsy na opros + poluchit oprosi na kotorie zapisalsya
     public void delete(Long id){
         FormEntity form=formRepository.findById(id)
                 .orElseThrow(()->new RuntimeException("No form with id: " +id));
