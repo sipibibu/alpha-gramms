@@ -22,6 +22,7 @@ public class FormAnswerController {
     private UserClient userClient;
     @Autowired
     private ObjectMapper objectMapper;
+    //Proverka chtobi nelzya bilo otvetit na vopros ne v forme
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody FormAnswerDTO dto){
         try {

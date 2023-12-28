@@ -66,7 +66,8 @@ public class FormController {
     @GetMapping("/get/{id}")
     public ResponseEntity<String> get(@PathVariable Long id){
         try{
-            return ResponseEntity.ok(objectMapper.writeValueAsString(formService.get(id)));
+            var res=formService.get(id);
+            return ResponseEntity.ok(objectMapper.writeValueAsString(res));
         }
         catch (Exception e){
             return ResponseEntity.status(500).body(e.getMessage());
