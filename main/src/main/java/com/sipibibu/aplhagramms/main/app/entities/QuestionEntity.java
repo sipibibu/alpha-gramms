@@ -30,7 +30,7 @@ public class QuestionEntity implements IQuestion {
     @Setter
     @Column(name="req")
     private Boolean isReq;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name="answerVars")
     @JsonManagedReference
     private List<AnswerEntity> ansVar;

@@ -34,12 +34,17 @@ public class Assembler {
 
     public QuestionEntity makeQuestion(QuestionDTO dto){
         QuestionEntity quest = new QuestionEntity(dto.questionText(),dto.isReq(),dto.type());
+        questionRepository.save(quest);
         List<AnswerEntity> ans = new ArrayList<>();
         if (Objects.nonNull(dto.ansVar())) {
-            for (var a : dto.ansVar())
-                ans.add(new AnswerEntity(a.text(), quest));
+            for (var a : dto.ansVar()){
+                var answer=new AnswerEntity(a.text(), quest);
+                answerRepository.save(answer);
+                ans.add(answer);
+            }
         }
         quest.addAnswers(ans);
+        questionRepository.save(quest);
         return  quest;
     }
 

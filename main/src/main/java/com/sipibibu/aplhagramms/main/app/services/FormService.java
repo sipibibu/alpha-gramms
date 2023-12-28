@@ -33,19 +33,15 @@ public class FormService {
     private Assembler assembler;
     public FormEntity create(FormDTO formDTO){
         FormEntity form=assembler.makeForm(formDTO);
-        if(!form.getQuestions().isEmpty()){
-            questionRepository.saveAll(form.getQuestions());
-            for (var q:form.getQuestions())
-                if(!q.getAnsVar().isEmpty())
-                    answerRepository.saveAll(q.getAnsVar());
-        }
         formRepository.save(form);
         return form;
     }
     //+company id
     public FormEntity get(Long id){
-        return formRepository.findById(id)
+
+        var res=formRepository.findById(id)
                 .orElseThrow(()->new RuntimeException("No form with id: "+id));
+        return res;
     }
     //po compnay
     public  List<FormEntity> getAll(){

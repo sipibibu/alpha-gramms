@@ -35,7 +35,7 @@ public class FormEntity implements IForm {
     private LocalDateTime closingAt;
     @Column(name = "updatedAt")
     private LocalDateTime updatedAt;
-    @OneToMany(fetch=FetchType.LAZY)
+    @OneToMany(fetch=FetchType.EAGER)
     @JoinColumn(name="questions")
     private List<QuestionEntity> questions;
     @OneToMany
