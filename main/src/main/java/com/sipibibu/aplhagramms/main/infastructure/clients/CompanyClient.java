@@ -16,6 +16,7 @@ public interface CompanyClient {
 
     @GetMapping("/getByFormIds")
     ResponseEntity<String> getByFormIds(@RequestBody List<Long> formId);
-
+    @GetMapping("/getByFormId/{formId}")
+    ResponseEntity<String> getByFormId(@PathVariable Long formId);
 
 }

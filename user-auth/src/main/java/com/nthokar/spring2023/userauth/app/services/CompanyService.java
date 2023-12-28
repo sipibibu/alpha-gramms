@@ -52,9 +52,10 @@ public class CompanyService {
         companyRepo.save(company);
         company.setTitle(title);
     }
-    public  Company getByForm(Long formId){
-        return companyRepo.findByFormsIsContaining(new Form(formId))
+    public  CompanyDTO getByForm(Long formId){
+        var company=companyRepo.findByFormsIsContaining(new Form(formId))
                 .orElseThrow(()->new RuntimeException("No company containing form with id: "+formId));
+        return new CompanyDTO(company.getId(),company.getTitle());
     }
     public  HashMap<Long,CompanyDTO> getByForms(List<Long> formId){
         HashMap<Long,CompanyDTO> res = new HashMap<>();

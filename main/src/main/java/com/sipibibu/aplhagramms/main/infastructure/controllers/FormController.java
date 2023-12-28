@@ -72,6 +72,23 @@ public class FormController {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
+
+    @GetMapping("/getShort/{id}")
+    public ResponseEntity<String> getShort(@PathVariable Long id){
+        try{
+            var form=formService.get(id);
+            var company=objectMapper.readValue(companyClient.getByFormId(id).getBody()
+                    ,new TypeReference<CompanyDTO>(){});
+            return ResponseEntity.ok(objectMapper.writeValueAsString(
+                    new FormGetDTO(form.getId(),form.getTitle(),
+                            company.id(), company.name(),
+                            form.getShortDescription(), form.getFullDescription(),
+                            form.getStartingAt(),form.getClosingAt())));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
     @GetMapping("/getAll")
     public ResponseEntity<String> getAll() {
         try {
@@ -86,7 +103,7 @@ public class FormController {
             {
                 var tmp=companies.get(x.getId());
                 if(Objects.nonNull(tmp))
-                    return new FormAllDTO(x.getId(),x.getTitle(),tmp.id(),tmp.name()
+                    return new FormGetDTO(x.getId(),x.getTitle(),tmp.id(),tmp.name()
                             ,x.getShortDescription(),x.getFullDescription(),
                             x.getStartingAt(),x.getStartingAt());
                 return null;
@@ -214,7 +231,7 @@ public class FormController {
         }
     }
 
-    record FormAllDTO(Long id,String title,Long companyId,String companyName,
-                      String shortDescription,String fullDescription,
-                      LocalDateTime startingAt,LocalDateTime closingAt){}
+    record FormGetDTO(Long id, String title, Long companyId, String companyName,
+                      String shortDescription, String fullDescription,
+                      LocalDateTime startingAt, LocalDateTime closingAt){}
 }
