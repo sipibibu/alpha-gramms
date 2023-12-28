@@ -29,10 +29,7 @@ public class FormAnswerController {
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody FormAnswerDTO dto){
         try {
-            Map<String,Object> headerMap = new HashMap<>();
-            headerMap.put("Authorization", "Bearer "+SecurityContextHolder.getContext().getAuthentication()
-                    .getCredentials().toString());
-            Long userId=userClient.getCurrentId(/*headerMap*/).getBody();
+            Long userId=userClient.getCurrentId().getBody();
             service.create(userId,dto);
             return ResponseEntity.ok().build();
         }
