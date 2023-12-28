@@ -23,7 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-
+//POluchenie po kompanyy
+//Che delat s checkbox
 // Интересы - а надо +
 //Zapisatsya i poluchit oprosi na kotorye zapisan
 @RestController
