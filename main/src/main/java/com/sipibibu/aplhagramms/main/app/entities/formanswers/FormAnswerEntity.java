@@ -1,5 +1,6 @@
 package com.sipibibu.aplhagramms.main.app.entities.formanswers;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sipibibu.aplhagramms.main.app.entities.FormEntity;
 import com.sipibibu.aplhagramms.main.app.entities.QuestionEntity;
 import jakarta.persistence.*;
@@ -26,6 +27,7 @@ public class FormAnswerEntity {
     @JoinColumn(name="form")
     private FormEntity form;
     @OneToMany
+    @JsonManagedReference
     @JoinColumn(name="questions")
     private List<QuestionAnswerEntity> quesions;
 

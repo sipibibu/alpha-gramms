@@ -27,7 +27,6 @@ public class FormAnswersService {
 
     public void create(Long userId, FormAnswerDTO dto){
         FormAnswerEntity formAnswer=assembler.makeFormAnswer(userId,dto);
-        questionAnswerRepository.saveAll(formAnswer.getQuesions());
         formAnswersRepository.save(formAnswer);
     }
 

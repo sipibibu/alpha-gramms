@@ -1,5 +1,6 @@
 package com.sipibibu.aplhagramms.main.app.entities.formanswers;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sipibibu.aplhagramms.main.app.entities.AnswerEntity;
 import com.sipibibu.aplhagramms.main.app.entities.QuestionEntity;
 import jakarta.persistence.*;
@@ -18,6 +19,7 @@ public class QuestionAnswerEntity {
     @Column(name = "id")
     private Long id;
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "form")
     private FormAnswerEntity form;
     @ManyToOne

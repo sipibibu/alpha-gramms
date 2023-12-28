@@ -6,11 +6,15 @@ import com.sipibibu.aplhagramms.main.app.dto.FormAnswerDTO;
 import com.sipibibu.aplhagramms.main.app.dto.QuestionAnswerDTO;
 import com.sipibibu.aplhagramms.main.app.entities.formanswers.QuestionAnswerEntity;
 import com.sipibibu.aplhagramms.main.app.services.FormAnswersService;
+import com.sipibibu.aplhagramms.main.infastructure.clients.UserClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/forms/answers", produces = "application/json")
@@ -19,12 +23,17 @@ public class FormAnswerController {
     @Autowired
     private FormAnswersService service;
     @Autowired
+    private UserClient userClient;
+    @Autowired
     private ObjectMapper objectMapper;
-//Text i Scale ne budut rabotat
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody FormAnswerDTO dto){
         try {
-            service.create(1L,dto);
+            Map<String,Object> headerMap = new HashMap<>();
+            headerMap.put("Authorization", "Bearer "+SecurityContextHolder.getContext().getAuthentication()
+                    .getCredentials().toString());
+            Long userId=userClient.getCurrentId(/*headerMap*/).getBody();
+            service.create(userId,dto);
             return ResponseEntity.ok().build();
         }
         catch (Exception e){

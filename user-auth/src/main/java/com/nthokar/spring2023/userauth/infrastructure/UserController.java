@@ -99,7 +99,17 @@ public class UserController {
             //return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
+    @GetMapping("/getId")
+    public ResponseEntity<Long> getCurrentId(Authentication authentication) {
+        try {
+            var user = userService.getUser(authentication.getName());
+            user.setPassword("");
+            return ResponseEntity.ok().body(user.getId());
+        } catch (Exception e) {
+            throw new RuntimeException();
+            //return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
     record educationDTO (String education) {};
     record ageDTO (String age) {};
     record emailDTO (String email) {};

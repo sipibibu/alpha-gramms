@@ -71,9 +71,13 @@ public class Assembler {
         FormEntity form=formRepository.findById(dto.formId())
                 .orElseThrow(()->new RuntimeException("No form with id: "+dto.formId()));
         FormAnswerEntity formAnswer=new FormAnswerEntity(userId,form);
+        formAnswersRepository.save(formAnswer);
         if(Objects.nonNull(dto.questions()))
-            for(var quest:dto.questions())
-                formAnswer.addQuestion(makeQuestionAnswer(formAnswer,quest));
+            for(var quest:dto.questions()) {
+                var tmp=makeQuestionAnswer(formAnswer, quest);
+                questionAnswerRepository.save(tmp);
+                formAnswer.addQuestion(tmp);
+            }
         return formAnswer;
     }
 }
