@@ -87,12 +87,8 @@ public class FormEntity implements IForm {
     }
     @Override
     public void setTitle(String newTitle) throws  RuntimeException{
-        if (!newTitle.replaceAll("[\\W\\n]", "").isBlank()) {
-            title = newTitle.strip();
-            setUpdatedAt(LocalDateTime.now());
-        }
-        else
-            throw new RuntimeException("Incorrect title");
+        title = newTitle.strip();
+        setUpdatedAt(LocalDateTime.now());
     }
     @Override
     public void addQuestion(@NonNull IQuestion q){
