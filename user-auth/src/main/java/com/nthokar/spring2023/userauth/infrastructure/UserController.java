@@ -110,6 +110,18 @@ public class UserController {
             //return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/getCompany")
+    public ResponseEntity<String> getCurrentCompany(Authentication authentication) {
+        try {
+            var company = userService.getCompany(authentication.getName());
+            return ResponseEntity.ok().body(mapper.writeValueAsString(company));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     record educationDTO (String education) {};
     record ageDTO (String age) {};
     record emailDTO (String email) {};

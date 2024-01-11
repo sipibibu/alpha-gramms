@@ -49,6 +49,19 @@ public class MyUserDetailsService implements UserDetailsService {
         throw new RuntimeException("no user");
     }
 
+    public Company getCompany(String email) {
+        var user = userRepo.findByEmail(email);
+        if (user.isPresent() && user.get() instanceof Manager manager) {
+            return manager.getCompany();
+        }
+        else if (user.isPresent() && user.get() instanceof Respondent) {
+            throw new RuntimeException("Respondent can't be in company");
+        }
+        else {
+            throw new RuntimeException("no user");
+        }
+    }
+
     public void setImage(User user,String image) {
         user.setImage(image);
         userRepo.save(user);

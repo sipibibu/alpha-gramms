@@ -36,6 +36,7 @@ public class CompanyController {
 //            return ResponseEntity.badRequest().body(e.getMessage());
 //        }
 //    }
+
     @PostMapping("/addForm")
     public ResponseEntity<String> addForm(@RequestParam Long formId, Authentication authentication) {
         companyService.addForm(getManagerCompany(authentication.getName()), new Form(formId));
