@@ -44,7 +44,6 @@ public class FormService {
                 .orElseThrow(()->new RuntimeException("No form with id: "+id));
         return res;
     }
-    //po compnay
     public  List<FormEntity> getAll(){
         return StreamSupport.stream(formRepository.findAll().spliterator(),false).toList();
     }
@@ -140,4 +139,24 @@ public class FormService {
     public List<FormEntity> getAllByIds(List<Long> formIds){
         return StreamSupport.stream(formRepository.findAllById(formIds).spliterator(),false).toList();
     }
+    public List<FormEntity> getAvailable(){
+        return getAll().stream().filter(x->x.getClosingAt().isAfter(ZonedDateTime.now()) &&
+                x.getStartingAt().isBefore(ZonedDateTime.now())).toList();
+    }
+    public List<FormEntity> getAvailable(List<Long> formsIds){
+        return getAllByIds(formsIds).stream().filter(x->x.getClosingAt().isAfter(ZonedDateTime.now()) &&
+                x.getStartingAt().isBefore(ZonedDateTime.now())).toList();
+    }
+    public List<FormEntity> getCompleted(){
+        return getAll().stream().filter(x->x.getClosingAt().isBefore(ZonedDateTime.now())).toList();
+    }
+    public List<FormEntity> getCompleted(List<Long> formsIds){
+        return getAllByIds(formsIds).stream().filter(x->x.getClosingAt().isBefore(ZonedDateTime.now())).toList();
+    }
+    public List<FormEntity> getUpcoming(){
+        return getAll().stream().filter(x->
+                x.getStartingAt().isAfter(ZonedDateTime.now())).toList();
+    }
+
+
 }

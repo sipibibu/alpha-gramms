@@ -103,7 +103,6 @@ public class UserController {
     public ResponseEntity<Long> getCurrentId(Authentication authentication) {
         try {
             var user = userService.getUser(authentication.getName());
-            user.setPassword("");
             return ResponseEntity.ok().body(user.getId());
         } catch (Exception e) {
             throw new RuntimeException();

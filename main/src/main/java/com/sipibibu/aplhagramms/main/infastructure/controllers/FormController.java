@@ -11,6 +11,7 @@ import com.sipibibu.aplhagramms.main.app.entities.InterestsForm;
 import com.sipibibu.aplhagramms.main.app.services.FormService;
 import com.sipibibu.aplhagramms.main.infastructure.clients.CompanyClient;
 import com.sipibibu.aplhagramms.main.infastructure.clients.InterestsClient;
+import com.sipibibu.aplhagramms.main.infastructure.clients.UserClient;
 import jakarta.persistence.OneToMany;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +39,8 @@ public class FormController {
     private CompanyClient companyClient;
     @Autowired
     private InterestsClient interestsClient;
+    @Autowired
+    private UserClient userClient;
 
     @Value("${services.gateway}")
     String gatewayUrl;
@@ -128,6 +131,57 @@ public class FormController {
                             form.getShortDescription(), form.getFullDescription(),
                             form.getStartingAt(),form.getClosingAt(),form.getInterests()
                             .stream().map(InterestsForm::getInterst).toList())));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/getAvailable")
+    public ResponseEntity<String> getAvailable(){
+        try{
+
+            return ResponseEntity.ok(objectMapper.writeValueAsString(formService.getAvailable()));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+    @GetMapping("/getAvailableById")
+    public ResponseEntity<String> getAvailableById(@RequestBody List<Long> formsIds){
+        try{
+
+            return ResponseEntity.ok(objectMapper.writeValueAsString(formService.getAvailable(formsIds)));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+    @GetMapping("/getCompletedById")
+    public ResponseEntity<String> getCompletedById(@RequestBody List<Long> formsIds){
+        try{
+
+            return ResponseEntity.ok(objectMapper.writeValueAsString(formService.getCompleted(formsIds)));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+    @GetMapping("/getCompleted")
+    public ResponseEntity<String> getCompleted(){
+        try{
+
+            return ResponseEntity.ok(objectMapper.writeValueAsString(formService.getCompleted()));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+    @GetMapping("/getUpcoming")
+    public ResponseEntity<String> getUpcoming(){
+        try{
+
+            return ResponseEntity.ok(objectMapper.writeValueAsString(formService.getUpcoming()));
         }
         catch (Exception e){
             return ResponseEntity.status(500).body(e.getMessage());
