@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -58,13 +59,16 @@ public class Assembler {
     }
     public FormEntity makeForm(FormDTO dto){
         FormEntity form = new FormEntity(dto.title(), "",
-                dto.fullDescription(), LocalDateTime.now(),dto.start(),
+                dto.fullDescription(), ZonedDateTime.now(),dto.start(),
                 dto.end(), makeQuestions(dto.questions()));
         return form;
     }
     public QuestionAnswerEntity makeQuestionAnswer(FormAnswerEntity form,QuestionAnswerDTO dto){
         QuestionEntity question=questionRepository.findById(dto.questionId())
                 .orElseThrow(()->new RuntimeException("No question with id: "+dto.questionId()));
+        FormEntity formEntity=formRepository.findById(form.getId()).get();
+        if(formEntity.getQuestions().stream().noneMatch(x->x.getId()==dto.questionId()))
+            throw new RuntimeException("No question with id: "+dto.questionId()+" in form with id: "+form.getId());
         return  new QuestionAnswerEntity(form,question, dto.text());
     }
     public FormAnswerEntity makeFormAnswer(Long userId,FormAnswerDTO dto){

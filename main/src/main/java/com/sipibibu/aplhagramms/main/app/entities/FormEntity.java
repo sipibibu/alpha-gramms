@@ -9,6 +9,7 @@ import lombok.NonNull;
 
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -30,11 +31,11 @@ public class FormEntity implements IForm {
     @Column(name = "fullDescription")
     private String fullDescription;
     @Column(name = "startingAt")
-    private LocalDateTime startingAt;
+    private ZonedDateTime startingAt;
     @Column(name = "closingAt")
-    private LocalDateTime closingAt;
+    private ZonedDateTime closingAt;
     @Column(name = "updatedAt")
-    private LocalDateTime updatedAt;
+    private ZonedDateTime updatedAt;
     @OneToMany(fetch=FetchType.EAGER)
     @JoinColumn(name="questions")
     private List<QuestionEntity> questions;
@@ -44,8 +45,8 @@ public class FormEntity implements IForm {
 
     public FormEntity(Long id, String title, String shortDescription,
                 String fullDescription,
-                LocalDateTime startingAt, LocalDateTime closingAt,
-                LocalDateTime updatedAt, List<QuestionEntity> questions,List<InterestsForm> interests){
+                      ZonedDateTime startingAt, ZonedDateTime closingAt,
+                      ZonedDateTime updatedAt, List<QuestionEntity> questions,List<InterestsForm> interests){
         this.id=id;
         setTitle(title);
         this.shortDescription=shortDescription;
@@ -56,8 +57,8 @@ public class FormEntity implements IForm {
         this.questions=questions;
         this.interests=interests;
     }
-    public FormEntity(Long id,String title,LocalDateTime created,
-                LocalDateTime startingAt,LocalDateTime closingAt){
+    public FormEntity(Long id,String title,ZonedDateTime created,
+                      ZonedDateTime startingAt,ZonedDateTime closingAt){
         this.id=id;
         setTitle(title);
         this.updatedAt=created;
@@ -66,8 +67,8 @@ public class FormEntity implements IForm {
         this.questions=new ArrayList<>();
     }
     public FormEntity(String title,String shortDescription,
-                String fullDescription,LocalDateTime created,
-                LocalDateTime startingAt,LocalDateTime closingAt,List<QuestionEntity> questions){
+                String fullDescription,ZonedDateTime created,
+                      ZonedDateTime startingAt,ZonedDateTime closingAt,List<QuestionEntity> questions){
         setTitle(title);
         this.shortDescription=shortDescription;
         this.fullDescription=fullDescription;
@@ -79,7 +80,7 @@ public class FormEntity implements IForm {
         else this.questions=questions;
     }
     public FormEntity(String title,String shortDescription,
-                      String fullDescription,LocalDateTime created){
+                      String fullDescription,ZonedDateTime created){
         setTitle(title);
         this.shortDescription=shortDescription;
         this.fullDescription=fullDescription;
@@ -88,40 +89,40 @@ public class FormEntity implements IForm {
     @Override
     public void setTitle(String newTitle) throws  RuntimeException{
         title = newTitle.strip();
-        setUpdatedAt(LocalDateTime.now());
+        setUpdatedAt(ZonedDateTime.now());
     }
     @Override
     public void addQuestion(@NonNull IQuestion q){
         this.questions.add((QuestionEntity) q);
-        setUpdatedAt(LocalDateTime.now());
+        setUpdatedAt(ZonedDateTime.now());
     }
     @Override
     public void removeQuestion(Long qId){
         questions.removeIf(x-> x.getId().equals(id));
     }
     @Override
-    public void setUpdatedAt(@NonNull LocalDateTime upd){
+    public void setUpdatedAt(@NonNull ZonedDateTime upd){
         updatedAt=upd;
     }
     @Override
-    public void setDate(LocalDateTime start,LocalDateTime end){
+    public void setDate(ZonedDateTime start,ZonedDateTime end){
         if(start.isBefore(end)){
             this.startingAt=start;
             this.closingAt=end;
-            setUpdatedAt(LocalDateTime.now());
+            setUpdatedAt(ZonedDateTime.now());
         }
         else throw new RuntimeException("Start is after end");
     }
     @Override
     public void deleteQuestion(Long questId){
         questions.removeIf(x->x.getId().equals(questId));
-        setUpdatedAt(LocalDateTime.now());
+        setUpdatedAt(ZonedDateTime.now());
     }
     @Override
     public void setDescription(String shortDesc,String fullDesc){
         shortDescription=shortDesc;
         fullDescription=fullDesc;
-        setUpdatedAt(LocalDateTime.now());
+        setUpdatedAt(ZonedDateTime.now());
     }
     @Override
     public  void addInterest(InterestsForm interest){
@@ -135,8 +136,6 @@ public class FormEntity implements IForm {
 
     @Override
     public void setInterests(List<InterestsForm> interests){
-        for(var i:interests){
-            addInterest(i);
-        }
+        this.interests=interests;
     }
 }

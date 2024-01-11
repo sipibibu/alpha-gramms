@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("interests/")
+@RequestMapping("/interests")
 public class InterestController {
     @Autowired InterestService interestService;
     ObjectMapper mapper = new ObjectMapper();
@@ -35,7 +35,7 @@ public class InterestController {
     }
 
 
-    @GetMapping("isExist/{id}")
+    @GetMapping("/isExist/{id}")
     public ResponseEntity<String> isExist(@PathVariable Long id) {
         try {
             var interests = interestService.isExist(id);
@@ -46,8 +46,8 @@ public class InterestController {
         }
     }
 
-    @GetMapping("isExistMany/{ids}")
-    public ResponseEntity<String> isExistMany(@PathVariable Long[] ids) {
+    @GetMapping("/isExistMany")
+    public ResponseEntity<String> isExistMany(@RequestBody Long[] ids) {
         try {
             var interests = interestService.exists(ids);
             return ResponseEntity.ok().body(mapper.writeValueAsString(interests));

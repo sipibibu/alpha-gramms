@@ -7,8 +7,11 @@ import com.sipibibu.aplhagramms.main.app.dto.CompanyDTO;
 import com.sipibibu.aplhagramms.main.app.dto.FormDTO;
 import com.sipibibu.aplhagramms.main.app.dto.QuestionDTO;
 import com.sipibibu.aplhagramms.main.app.entities.FormEntity;
+import com.sipibibu.aplhagramms.main.app.entities.InterestsForm;
 import com.sipibibu.aplhagramms.main.app.services.FormService;
 import com.sipibibu.aplhagramms.main.infastructure.clients.CompanyClient;
+import com.sipibibu.aplhagramms.main.infastructure.clients.InterestsClient;
+import jakarta.persistence.OneToMany;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -18,14 +21,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-//POluchenie po kompanyy
 //Che delat s checkbox
-// Интересы - а надо +
 //Zapisatsya i poluchit oprosi na kotorye zapisan
 @RestController
 @RequestMapping(value = "/forms", produces = "application/json")
@@ -34,6 +36,8 @@ public class FormController {
     private FormService formService;
     @Autowired
     private CompanyClient companyClient;
+    @Autowired
+    private InterestsClient interestsClient;
 
     @Value("${services.gateway}")
     String gatewayUrl;
@@ -74,6 +78,43 @@ public class FormController {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
+    @GetMapping("/getByCompanyName/{name}")
+    public ResponseEntity<String> getByCompanyName(@PathVariable String name){
+        try{
+            var company=objectMapper.readValue(companyClient.get(name).getBody(),
+                    new TypeReference<CompanyFull>() {});
+            var forms=formService.getAllByIds(company.forms.stream().map(x->x.id).toList()).
+                    stream().map(x->new FormGetDTO(
+                            x.getId(),x.getTitle(),
+                            company.id(),company.title(),
+                            x.getShortDescription(),x.getFullDescription(),
+                            x.getStartingAt(),x.getClosingAt(),x.getInterests()
+                            .stream().map(InterestsForm::getInterst).toList())).toList();
+
+            return ResponseEntity.ok(objectMapper.writeValueAsString(forms));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/getCurCompany")
+    public ResponseEntity<String> getCurComp(){
+        try{
+            var company=objectMapper.readValue(companyClient.getCur().getBody()
+                    ,new TypeReference<CompanyFull>(){});
+            var forms=formService.getAllByIds(company.forms.stream().map(x->x.id).toList())
+                    .stream().map(x->new FormGetDTO(x.getId(),x.getTitle(),
+                            company.id(),company.title(),
+                            x.getShortDescription(),x.getFullDescription(),
+                            x.getStartingAt(),x.getClosingAt(),x.getInterests()
+                            .stream().map(InterestsForm::getInterst).toList()));
+            return ResponseEntity.ok(objectMapper.writeValueAsString(forms));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
 
     @GetMapping("/getShort/{id}")
     public ResponseEntity<String> getShort(@PathVariable Long id){
@@ -85,7 +126,8 @@ public class FormController {
                     new FormGetDTO(form.getId(),form.getTitle(),
                             company.id(), company.name(),
                             form.getShortDescription(), form.getFullDescription(),
-                            form.getStartingAt(),form.getClosingAt())));
+                            form.getStartingAt(),form.getClosingAt(),form.getInterests()
+                            .stream().map(InterestsForm::getInterst).toList())));
         }
         catch (Exception e){
             return ResponseEntity.status(500).body(e.getMessage());
@@ -107,7 +149,8 @@ public class FormController {
                 if(Objects.nonNull(tmp))
                     return new FormGetDTO(x.getId(),x.getTitle(),tmp.id(),tmp.name()
                             ,x.getShortDescription(),x.getFullDescription(),
-                            x.getStartingAt(),x.getStartingAt());
+                            x.getStartingAt(),x.getStartingAt(),x.getInterests()
+                            .stream().map(InterestsForm::getInterst).toList());
                 return null;
             }).toList();
             return ResponseEntity.ok(objectMapper.writeValueAsString(res));
@@ -117,7 +160,7 @@ public class FormController {
         }
     }
         @PutMapping("/addExistQuestion/{fId}")
-    public ResponseEntity<String> addExistingQuest( Long questId, @PathVariable Long fId){
+    public ResponseEntity<String> addExistingQuest( @RequestBody Long questId, @PathVariable Long fId){
         try{
             formService.addQuestion(questId, fId);
             return  ResponseEntity.ok("Ok");
@@ -149,8 +192,8 @@ public class FormController {
     }
     @PutMapping("/setDate/{id}")
     public ResponseEntity<String> setStartNEnd(@PathVariable Long id,
-                                                LocalDateTime start,
-                                                LocalDateTime end){
+                                               @RequestBody ZonedDateTime start,
+                                               @RequestBody ZonedDateTime end){
         try{
             formService.setStartNEnd(id, start, end);
             return ResponseEntity.ok("ok");
@@ -183,8 +226,8 @@ public class FormController {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
-    @PutMapping("/setTitle")
-    public ResponseEntity<String> setTitle(Long formId,String title){
+    @PutMapping("/setTitle/{formId}")
+    public ResponseEntity<String> setTitle(@PathVariable  Long formId,@RequestBody String title){
         try {
             formService.setTitle(formId, title);
             return ResponseEntity.ok("ok");
@@ -193,8 +236,8 @@ public class FormController {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
-    @GetMapping("/getInterests")
-    public ResponseEntity<String> getInterests(Long formId){
+    @GetMapping("/getInterests/{formId}")
+    public ResponseEntity<String> getInterests(@PathVariable Long formId){
         try {
             return ResponseEntity.ok(objectMapper.writeValueAsString(formService.getInterests(formId)));
         }
@@ -202,9 +245,14 @@ public class FormController {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
-    @PutMapping("/addInterest")
-    public ResponseEntity<String> addInterest(Long formId,Long interestId){
+
+    @PutMapping("/{formId}/addInterest")
+    public ResponseEntity<String> addInterest(@PathVariable Long formId,@RequestParam Long interestId){
         try {
+            boolean exist=objectMapper.readValue(interestsClient.isExist(interestId).getBody(),
+                    new TypeReference<Boolean>() {});
+            if(!exist)
+                throw new RuntimeException("No interest with id: "+interestId);
             formService.addInterest(formId, interestId);
             return ResponseEntity.ok("ok");
         }
@@ -212,8 +260,8 @@ public class FormController {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
-    @DeleteMapping("/deleteInterest")
-    public ResponseEntity<String> deleteInterest(Long formId, Long interestsId){
+    @DeleteMapping("/{formId}/deleteInterest")
+    public ResponseEntity<String> deleteInterest(@PathVariable Long formId,@RequestBody Long interestsId){
         try {
             formService.deleteInterest(formId, interestsId);
             return ResponseEntity.ok("ok");
@@ -222,18 +270,27 @@ public class FormController {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
-    @PutMapping("/setInterests")
-    public ResponseEntity<String> setInterests(Long formId, List<Long> interest){
+    @PutMapping("/{formId}/setInterests")
+    public ResponseEntity<String> setInterests(@PathVariable Long formId, @RequestBody InterestsListDTO interests){
         try {
-            formService.setInterests(formId, interest);
+            var interestsExists=objectMapper.readValue(
+                    interestsClient.isExistMany(interests.values).getBody(),
+                    new TypeReference<List<Long>>() {});
+            formService.setInterests(formId, interestsExists);
             return ResponseEntity.ok("ok");
         }
         catch (Exception e){
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
+    record FormId(Long  id){}
 
     record FormGetDTO(Long id, String title, Long companyId, String companyName,
                       String shortDescription, String fullDescription,
-                      LocalDateTime startingAt, LocalDateTime closingAt){}
+                      ZonedDateTime startingAt, ZonedDateTime closingAt,List<Long> interests){}
+    record CompanyFull(Long id,
+            String title,
+            String description,
+            String image, List<FormId> forms){}
+    record InterestsListDTO(Long[] values){}
 }

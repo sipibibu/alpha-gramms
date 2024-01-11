@@ -109,6 +109,15 @@ public class CompanyController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    @GetMapping("/getCur")
+    public ResponseEntity<String> getCur(Authentication authentication) {
+        try {
+            return ResponseEntity.ok(mapper.writeValueAsString(getManagerCompany(authentication.getName())));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
     @GetMapping("/getByFormIds")
     public ResponseEntity<String> getByFormIds(@RequestBody List<Long> formId){

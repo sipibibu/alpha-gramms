@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.StreamSupport;
@@ -80,7 +81,7 @@ public class FormService {
         formRepository.save(form);
     }
 
-    public void setStartNEnd(Long formId,LocalDateTime start,LocalDateTime end){
+    public void setStartNEnd(Long formId, ZonedDateTime start, ZonedDateTime end){
         FormEntity form=formRepository.findById(formId)
                 .orElseThrow(()->new RuntimeException("No form with id: "+formId));
         form.setDate(start,end);
@@ -135,5 +136,8 @@ public class FormService {
         form.setInterests(interest.stream().map(InterestsForm::new).toList());
         interestsFormRepository.saveAll(form.getInterests());
         formRepository.save(form);
+    }
+    public List<FormEntity> getAllByIds(List<Long> formIds){
+        return StreamSupport.stream(formRepository.findAllById(formIds).spliterator(),false).toList();
     }
 }

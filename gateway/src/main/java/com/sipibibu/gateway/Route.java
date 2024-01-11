@@ -29,6 +29,10 @@ public class Route {
 //                        .uri("http://localhost:8090"))
                         .uri(authUrl))
                 .route(p -> p
+                        .path("/interests/**")
+//                        .uri("http://localhost:8090"))
+                        .uri(authUrl))
+                .route(p -> p
                         .path("/forms/**")
                         //.uri("http://localhost:8012"))
                         .uri(apiUrl))
