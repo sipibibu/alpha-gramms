@@ -17,7 +17,8 @@ import java.util.Set;
 public class Respondent extends User {
     @ManyToMany
     List<Interest> interests;
-
+    @ManyToMany
+    List<FormSubscribe> upcoming;
     protected Respondent(){
     }
     private Respondent(String email, String firstName, String lastName, String password, Set<Role> roles){
@@ -41,5 +42,10 @@ public class Respondent extends User {
 
     public void addInterest(Interest interests) {
         this.interests.add(interests);
+    }
+
+
+    public void subscribe(FormSubscribe form) {
+        this.upcoming.add(form);
     }
 }

@@ -148,14 +148,9 @@ public class FormController {
         }
     }
     @GetMapping("/getAvailableById")
-    public ResponseEntity<String> getAvailableById(@RequestBody List<Long> formsIds){
-        try{
-
-            return ResponseEntity.ok(objectMapper.writeValueAsString(formService.getAvailable(formsIds)));
-        }
-        catch (Exception e){
-            return ResponseEntity.status(500).body(e.getMessage());
-        }
+    @ExceptionHandler
+    public ResponseEntity<Long[]> getAvailableById(@RequestBody List<Long> formsIds){
+        return ResponseEntity.ok((formService.getAvailable(formsIds).stream().map(x -> x.getId()).toArray(Long[]::new)));
     }
     @GetMapping("/getCompletedById")
     public ResponseEntity<String> getCompletedById(@RequestBody List<Long> formsIds){

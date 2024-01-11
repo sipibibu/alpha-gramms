@@ -6,15 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.Optional;
-
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Form {
+public class FormSubscribe {
     @Id
     @Getter
     private Long id;
+
+    public Boolean isAvailable;
 }

@@ -2,9 +2,9 @@ package com.nthokar.spring2023.userauth.app.services;
 
 import com.nthokar.spring2023.userauth.app.UserDetails;
 import com.nthokar.spring2023.userauth.app.entities.*;
-import com.nthokar.spring2023.userauth.app.repos.InterestRepository;
-import com.nthokar.spring2023.userauth.app.repos.UserRepository;
+import com.nthokar.spring2023.userauth.app.repos.*;
 import com.nthokar.spring2023.userauth.infrastructure.UserController;
+import com.nthokar.spring2023.userauth.infrastructure.clients.FormClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
@@ -25,6 +27,13 @@ public class MyUserDetailsService implements UserDetailsService {
     private CompanyService companyService;
     @Autowired
     private InterestService interestService;
+    @Autowired
+    FormSubscribeRepository formSubscribeRepo;
+    @Autowired
+    RespondentRepository respondentRepository;
+    @Autowired
+    FormClient formClient;
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -93,11 +102,49 @@ public class MyUserDetailsService implements UserDetailsService {
         userRepo.save(user);
     }
 
+    public void subscribe(String username, Long formId) {
+        var user = getUser(username);
+        if (!(user instanceof Respondent respondent)) {
+            throw new RuntimeException("this user cant subscribe to forms");
+        }
+        if (formSubscribeRepo.existsById(formId)) {
+            var formSubscribe = formSubscribeRepo.findById(formId).get();
+            respondent.subscribe(formSubscribe);
+            userRepo.save(respondent);
+        }
+        else {
+            var formSubscribe = new FormSubscribe(formId, false);
+            formSubscribeRepo.save(formSubscribe);
+            userRepo.save(respondent);
+        }
+    }
+
     public void update(User userOld, User user) {
         if (userOld instanceof Respondent && user instanceof Respondent
                 || userOld instanceof Manager && user instanceof Manager) {
             user.setId(userOld.getId());
             userRepo.save(user);
         }
+    }
+
+    public void updateStatus() {
+        var iter = formSubscribeRepo.findAll();
+        List<FormSubscribe> subscribes = StreamSupport.stream(iter.spliterator(), false)
+                .toList();
+        var forms = subscribes.stream().map(x -> x.getId()).toList();
+        var ids = formClient.get(forms).getBody();
+        for (var id:ids) {
+            var form = formSubscribeRepo.findById(id);
+            if (form.isPresent()) {
+                form.get().isAvailable = true;
+                formSubscribeRepo.save(form.get());
+                var usersToNotify = respondentRepository.findByUpcomingContaining(form.get());
+                sendNotification(usersToNotify, "ASdkklakjs;dlka;lsdk;aklsd");
+            }
+        }
+    }
+
+    public void sendNotification(List<Respondent> users,String notify) {
+
     }
 }

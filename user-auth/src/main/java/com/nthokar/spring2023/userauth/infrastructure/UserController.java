@@ -1,14 +1,19 @@
 package com.nthokar.spring2023.userauth.infrastructure;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nthokar.spring2023.userauth.app.entities.Respondent;
 import com.nthokar.spring2023.userauth.app.entities.User;
 import com.nthokar.spring2023.userauth.app.services.MyUserDetailsService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.Context;
 import java.util.List;
 
 @RestController
@@ -107,6 +112,35 @@ public class UserController {
         } catch (Exception e) {
             throw new RuntimeException();
             //return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/subscribe/{formId}")
+    public ResponseEntity<String> getCurrentId(Authentication authentication, @PathVariable Long formId) {
+        try {
+            var a = (Jwt) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+            a.getTokenValue();
+            userService.subscribe(authentication.getName(), formId);
+            userService.updateStatus();
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            throw new RuntimeException();
+            //return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/subscribe")
+    public ResponseEntity<String> getSubscribes(Authentication authentication) {
+        try {
+            var user = userService.getUser(authentication.getName());
+            if (user instanceof Respondent respondent) {
+                return ResponseEntity.ok().body(mapper.writeValueAsString(respondent.getUpcoming()));
+            }
+            else {
+                throw new RuntimeException("this user cant have subscribes");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
