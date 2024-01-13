@@ -13,6 +13,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 
 @Entity
@@ -41,12 +42,12 @@ public class FormEntity implements IForm {
     private List<QuestionEntity> questions;
     @OneToMany
     @JoinColumn(name="interests")
-    private List<InterestsForm> interests;
+    private Set<InterestsForm> interests;
 
     public FormEntity(Long id, String title, String shortDescription,
                 String fullDescription,
                       ZonedDateTime startingAt, ZonedDateTime closingAt,
-                      ZonedDateTime updatedAt, List<QuestionEntity> questions,List<InterestsForm> interests){
+                      ZonedDateTime updatedAt, List<QuestionEntity> questions,Set<InterestsForm> interests){
         this.id=id;
         setTitle(title);
         this.shortDescription=shortDescription;
@@ -126,16 +127,17 @@ public class FormEntity implements IForm {
     }
     @Override
     public  void addInterest(InterestsForm interest){
-        if(this.interests.stream().map(InterestsForm::getInterst).noneMatch(x->x.equals(interest.getId())))
+        if(this.interests.stream().map(InterestsForm::getId).noneMatch(x->x.equals(interest.getId())))
             this.interests.add(interest);
     }
     @Override
     public  void deleteInterest(Long id){
-        interests.removeIf(x-> x.getInterst().equals(id));
+        interests.removeIf(x-> x.getId().equals(id));
     }
 
     @Override
     public void setInterests(List<InterestsForm> interests){
-        this.interests=interests;
+        this.interests.clear();
+        this.interests.addAll(interests);
     }
 }

@@ -39,8 +39,7 @@ public class FormController {
     private CompanyClient companyClient;
     @Autowired
     private InterestsClient interestsClient;
-    @Autowired
-    private UserClient userClient;
+
 
     @Value("${services.gateway}")
     String gatewayUrl;
@@ -50,6 +49,7 @@ public class FormController {
         formService=fService;
     }
 
+    //redachit mojno do otkritiya
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody FormDTO formDTO){
         try{
@@ -92,7 +92,7 @@ public class FormController {
                             company.id(),company.title(),
                             x.getShortDescription(),x.getFullDescription(),
                             x.getStartingAt(),x.getClosingAt(),x.getInterests()
-                            .stream().map(InterestsForm::getInterst).toList())).toList();
+                            .stream().map(InterestsForm::getId).toList())).toList();
 
             return ResponseEntity.ok(objectMapper.writeValueAsString(forms));
         }
@@ -111,7 +111,7 @@ public class FormController {
                             company.id(),company.title(),
                             x.getShortDescription(),x.getFullDescription(),
                             x.getStartingAt(),x.getClosingAt(),x.getInterests()
-                            .stream().map(InterestsForm::getInterst).toList()));
+                            .stream().map(InterestsForm::getId).toList()));
             return ResponseEntity.ok(objectMapper.writeValueAsString(forms));
         }
         catch (Exception e){
@@ -130,7 +130,7 @@ public class FormController {
                             company.id(), company.name(),
                             form.getShortDescription(), form.getFullDescription(),
                             form.getStartingAt(),form.getClosingAt(),form.getInterests()
-                            .stream().map(InterestsForm::getInterst).toList())));
+                            .stream().map(InterestsForm::getId).toList())));
         }
         catch (Exception e){
             return ResponseEntity.status(500).body(e.getMessage());
@@ -199,7 +199,7 @@ public class FormController {
                     return new FormGetDTO(x.getId(),x.getTitle(),tmp.id(),tmp.name()
                             ,x.getShortDescription(),x.getFullDescription(),
                             x.getStartingAt(),x.getStartingAt(),x.getInterests()
-                            .stream().map(InterestsForm::getInterst).toList());
+                            .stream().map(InterestsForm::getId).toList());
                 return null;
             }).toList();
             return ResponseEntity.ok(objectMapper.writeValueAsString(res));
@@ -319,6 +319,7 @@ public class FormController {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
+
     @PutMapping("/{formId}/setInterests")
     public ResponseEntity<String> setInterests(@PathVariable Long formId, @RequestBody InterestsListDTO interests){
         try {
@@ -332,6 +333,9 @@ public class FormController {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
+
+
+
     record FormId(Long  id){}
 
     record FormGetDTO(Long id, String title, Long companyId, String companyName,

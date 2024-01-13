@@ -111,7 +111,7 @@ public class FormService {
     public List<Long> getInterests(Long formId){
         FormEntity form=formRepository.findById(formId)
                 .orElseThrow(()->new RuntimeException("No form with id: "+formId));
-        return form.getInterests().stream().map(InterestsForm::getInterst).toList();
+        return form.getInterests().stream().map(InterestsForm::getId).toList();
     }
     public void addInterest(Long formId,Long interestId){
         FormEntity form=formRepository.findById(formId)
@@ -127,13 +127,13 @@ public class FormService {
                     .orElseThrow(()->new RuntimeException("No form with id: "+formId));
         form.deleteInterest(interestsId);
         formRepository.save(form);
-        interestsFormRepository.deleteById(interestsId);
     }
     public void setInterests(Long formId, List<Long> interest){
         FormEntity form=formRepository.findById(formId)
                 .orElseThrow(()->new RuntimeException("No form with id: "+formId));
-        form.setInterests(interest.stream().map(InterestsForm::new).toList());
-        interestsFormRepository.saveAll(form.getInterests());
+        var interests=interest.stream().map(InterestsForm::new).toList();
+        interestsFormRepository.saveAll(interests);
+        form.setInterests(interests);
         formRepository.save(form);
     }
     public List<FormEntity> getAllByIds(List<Long> formIds){

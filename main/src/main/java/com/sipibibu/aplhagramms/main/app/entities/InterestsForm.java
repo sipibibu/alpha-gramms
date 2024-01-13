@@ -5,20 +5,31 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @Entity
 @Getter
 @Table(name="interests")
 @NoArgsConstructor
-@AllArgsConstructor
 public class InterestsForm {
     @Id
-    @GeneratedValue
     private Long id;
 
-    @Column(name="interestId")
-    private Long interst;
-
     public InterestsForm(Long interst){
-        this.interst=interst;
+        this.id=interst;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass())
+            return false;
+
+        return ((InterestsForm) obj).id.equals(this.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
