@@ -92,14 +92,17 @@ public class MyUserDetailsService implements UserDetailsService {
         if (!(user instanceof Respondent respondent)) throw new RuntimeException();
         respondent.setInterest(new ArrayList<>());
         for (var interestName:interestsNames) {
-            if (!interestService.isExist(interestName))
+            if (interestService.isExist(interestName))
             {
-                interestService.registerInterest(interestName);
+                var interest = interestService.get(interestName);
+                interest.ifPresent(respondent::addInterest);
             }
-            var interest = interestService.get(interestName);
-            interest.ifPresent(respondent::addInterest);
+            else {
+                throw new RuntimeException("This interest dose not exist");
+            }
         }
         userRepo.save(user);
+
     }
 
     public void subscribe(String username, Long formId) {
