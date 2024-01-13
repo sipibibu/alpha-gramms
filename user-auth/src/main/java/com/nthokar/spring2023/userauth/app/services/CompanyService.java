@@ -49,8 +49,8 @@ public class CompanyService {
     public void setTitle(Company company, String title) {
         if (get(title).isPresent())
             throw new RuntimeException("name is unvailable");
-        companyRepo.save(company);
         company.setTitle(title);
+        companyRepo.save(company);
     }
     public  CompanyDTO getByForm(Long formId){
         var company=companyRepo.findByFormsIsContaining(new Form(formId))
