@@ -116,16 +116,25 @@ public class UserController {
     }
 
     @PutMapping("/subscribe/{formId}")
-    public ResponseEntity<String> getCurrentId(Authentication authentication, @PathVariable Long formId) {
+    public ResponseEntity<String> subscribe(Authentication authentication, @PathVariable Long formId) {
         try {
-            var a = (Jwt) SecurityContextHolder.getContext().getAuthentication().getCredentials();
-            a.getTokenValue();
             userService.subscribe(authentication.getName(), formId);
             userService.updateStatus();
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             throw new RuntimeException();
             //return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/subscribe/{formId}")
+    public ResponseEntity<String> unsubscribe(Authentication authentication, @PathVariable Long formId) {
+        try {
+            userService.unsubscribe(authentication.getName(), formId);
+            userService.updateStatus();
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

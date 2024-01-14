@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -119,6 +120,17 @@ public class MyUserDetailsService implements UserDetailsService {
             var formSubscribe = new FormSubscribe(formId, false);
             formSubscribeRepo.save(formSubscribe);
             respondent.subscribe(formSubscribe);
+            userRepo.save(respondent);
+        }
+    }
+
+    public void unsubscribe(String username, Long formId) {
+        var user = getUser(username);
+        if (!(user instanceof Respondent respondent)) {
+            throw new RuntimeException("this user cant subscribe to forms");
+        }
+        if (respondent.getUpcoming().stream().anyMatch(x -> Objects.equals(x.getId(), formId))) {
+            respondent.unsubscribe(formId);
             userRepo.save(respondent);
         }
     }

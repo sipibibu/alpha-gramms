@@ -8,9 +8,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Getter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Entity
@@ -47,5 +45,9 @@ public class Respondent extends User {
 
     public void subscribe(FormSubscribe form) {
         this.upcoming.add(form);
+    }
+
+    public void unsubscribe(Long formID) {
+        upcoming = upcoming.stream().filter(x -> !Objects.equals(x.getId(), formID)).toList();
     }
 }
