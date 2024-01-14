@@ -63,10 +63,10 @@ public class Assembler {
                 dto.end(), makeQuestions(dto.questions()));
         return form;
     }
-    public QuestionAnswerEntity makeQuestionAnswer(FormAnswerEntity form,QuestionAnswerDTO dto){
+    public QuestionAnswerEntity makeQuestionAnswer(FormAnswerEntity form,QuestionAnswerDTO dto, Long formId){
         QuestionEntity question=questionRepository.findById(dto.questionId())
                 .orElseThrow(()->new RuntimeException("No question with id: "+dto.questionId()));
-        FormEntity formEntity=formRepository.findById(form.getId()).get();
+        FormEntity formEntity=formRepository.findById(formId).get();
         if(formEntity.getQuestions().stream().noneMatch(x->x.getId()==dto.questionId()))
             throw new RuntimeException("No question with id: "+dto.questionId()+" in form with id: "+form.getId());
         return  new QuestionAnswerEntity(form,question, dto.text());
@@ -78,7 +78,7 @@ public class Assembler {
         formAnswersRepository.save(formAnswer);
         if(Objects.nonNull(dto.questions()))
             for(var quest:dto.questions()) {
-                var tmp=makeQuestionAnswer(formAnswer, quest);
+                var tmp=makeQuestionAnswer(formAnswer, quest, form.getId());
                 questionAnswerRepository.save(tmp);
                 formAnswer.addQuestion(tmp);
             }
