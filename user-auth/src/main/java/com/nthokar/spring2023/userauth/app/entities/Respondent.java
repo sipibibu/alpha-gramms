@@ -48,6 +48,11 @@ public class Respondent extends User {
     }
 
     public void unsubscribe(Long formID) {
-        upcoming = upcoming.stream().filter(x -> !Objects.equals(x.getId(), formID)).toList();
+        for (var form:upcoming) {
+            if (form.getId().equals(formID)) {
+                upcoming.remove(form);
+                break;
+            }
+        }
     }
 }
