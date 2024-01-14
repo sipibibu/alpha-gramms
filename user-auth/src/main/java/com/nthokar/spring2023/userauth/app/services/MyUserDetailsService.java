@@ -118,6 +118,7 @@ public class MyUserDetailsService implements UserDetailsService {
         else {
             var formSubscribe = new FormSubscribe(formId, false);
             formSubscribeRepo.save(formSubscribe);
+            respondent.subscribe(formSubscribe);
             userRepo.save(respondent);
         }
     }
