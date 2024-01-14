@@ -111,7 +111,9 @@ public class MyUserDetailsService implements UserDetailsService {
         if (!(user instanceof Respondent respondent)) {
             throw new RuntimeException("this user cant subscribe to forms");
         }
-        if (respondent.getUpcoming().stream().anyMatch(x -> x.getId().equals(formId)))
+        if (respondent.getUpcoming().stream().anyMatch(x -> x.getId().equals(formId))) {
+            throw new RuntimeException("this user already subscribed to that form");
+        }
         if (formSubscribeRepo.existsById(formId)) {
             var formSubscribe = formSubscribeRepo.findById(formId).get();
             respondent.subscribe(formSubscribe);
