@@ -4,3 +4,4 @@ server:
 services:
   auth: ${AUTH_URL:http://localhost:9000}
   api: ${API_URL:http://localhost:8090}
+  messenger: ${MESS_URL:http://localhost:9010}

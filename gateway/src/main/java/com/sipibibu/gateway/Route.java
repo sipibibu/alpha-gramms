@@ -12,6 +12,8 @@ public class Route {
     String authUrl;
     @Value("${services.api}")
     String apiUrl;
+    @Value("${services.messenger}")
+    String messUrl;
 
     @Bean
     public RouteLocator myRoutes(RouteLocatorBuilder builder) {
@@ -44,6 +46,14 @@ public class Route {
                         .path("/answers/**")
                         //.uri("http://localhost:8012"))
                         .uri(apiUrl))
+                .route(p -> p
+                        .path("/chats/**")
+                        //.uri("http://localhost:8012"))
+                        .uri(messUrl))
+                .route(p -> p
+                        .path("/messages/**")
+                        //.uri("http://localhost:8012"))
+                        .uri(messUrl))
                 .build();
     }
 }

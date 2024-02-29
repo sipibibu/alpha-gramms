@@ -7,9 +7,9 @@ services:
 spring:
   sql.init.mode: always
   datasource:
-    url: jdbc:postgresql://${POSTGRES_URL:localhost:5432}/postgres
-    username: postgres
-    password: secret
+    url: jdbc:postgresql://${POSTGRES_URL:localhost:5431}/auth
+    username: pas
+    password: pas
   jpa:
     show-sql: true
     generate-ddl: true
